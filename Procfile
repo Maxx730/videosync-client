@@ -1,1 +1,1 @@
-web:npm run build
+web:npm install -g serve -s build
