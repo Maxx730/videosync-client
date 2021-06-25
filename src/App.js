@@ -6,7 +6,7 @@ import UserList from './components/UserList';
 import VideoPlayer from 'components/VideoPlayer';
 import {Columns, Tabs, Section} from 'react-bulma-components';
 
-const SERVER = process.env.NODE_ENV === 'development' ? 'localhost:4000' : 'https://videosync-ku38p.ondigitalocean.app:4000';
+const SERVER = process.env.NODE_ENV === 'development' ? 'localhost:4000' : 'https://videosync-ku38p.ondigitalocean.app/videosync-core';
 
 function App() {
   const socket = socketClient(SERVER, {autoConnect: true});
