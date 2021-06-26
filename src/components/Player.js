@@ -11,9 +11,12 @@ export default function Player(props) {
 
     return (
         <>
+        <span>{props.playing.toString()}</span>
             {
                 props.video ? <ReactPlayer ref={PlayerRef} controls playing={props.playing} width={'auto'} height={'auto'} onProgress={progress => {
 
+            }} onEnded={() => {
+                props.onEnded && props.onEnded();
             }} onPlay={() => {
                 props.onPlay && props.onPlay(PlayerRef.current.getCurrentTime());
             }} onPause={() => {

@@ -47,7 +47,9 @@ function App() {
   return (
     <Columns>
       <Columns.Column paddingless={true} marginless={true} size={8}>
-        <VideoPlayer video={currentVideo} current={currentTime} playing={playing} onPlay={time => {
+        <VideoPlayer video={currentVideo} current={currentTime} playing={playing} onEnded={() => {
+          socket.emit('next_video');
+        }} onPlay={time => {
           socket.emit('playing', {playing: true, current: time});
         }} onPause={time => {
           socket.emit('playing', {playing: false, current: time});
