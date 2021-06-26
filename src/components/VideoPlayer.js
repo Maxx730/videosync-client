@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Section, Box, Form, Button, Dropdown} from 'react-bulma-components';
 import SearchResult from './SearchResult';
-import YouTube from 'react-youtube';
+import Player from './Player';
 
 const { Input, Field, Control, Label } = Form;
 const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=';
@@ -44,7 +44,7 @@ export default function VideoPlayer(props) {
                     })
                 }
                 <Box>
-                    <YouTube videoId="2g811Eo7K8U" />
+                    <Player current={props.current} playing={props.playing} onPause={props.onPause} onPlay={props.onPlay}></Player>
                 </Box>
             </Section>
         </>
