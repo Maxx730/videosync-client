@@ -59,7 +59,7 @@ function App() {
       </Columns.Column>
       <Columns.Column paddingless={true} marginless={true} size={4}>
         <Section pl={1}>
-          <Sidebar removeVideo={video => {
+          <Sidebar nickname={nickname} removeVideo={video => {
             socket.emit('remove_video', video);
           }} playlist={videos} onChangeTab={tab => {
             setTab(tab);

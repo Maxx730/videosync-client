@@ -10,6 +10,7 @@ export default function VideoPlayer(props) {
     const [loading, setLoading] = useState(false);
     const [searchList, setSearchList] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [urlError, setUrlError] = useState(false);
 
     useEffect(() => {
 
@@ -25,15 +26,16 @@ export default function VideoPlayer(props) {
                         </Button>
                     </Control>
                     <Control loading={loading} fullwidth>
-                        <Input value={searchTerm} onChange={async event => {
+                        <Input color={urlError ? 'danger' : ''} value={searchTerm} onChange={async event => {
                             event.target.value !== '' && setLoading(true);
                             setSearchTerm(event.target.value);
                             const video = await FindVideo(event.target.value).then(data => {
-                                console.log(data);
                                 setLoading(false);
+                                setUrlError(false);
                                 setSearchList(data.items);
                             }).catch(err => {
                                 setLoading(false);
+                                setUrlError(true);
                                 console.log(err);
                             });
                         }} placeholder={'URL'}/>

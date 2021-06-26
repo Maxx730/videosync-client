@@ -1,6 +1,8 @@
 import 'bulma/css/bulma.min.css';
-import { Button, Section, Box, Panel, PanelBlock, Columns } from 'react-bulma-components';
+import { Button, Section, Box, Panel, PanelBlock, Columns, Form } from 'react-bulma-components';
 import Marquee from 'react-fast-marquee';
+
+const { Input, Field, Control, Label } = Form;
 
 export default function Sidebar(props) {
     const tab = props.tab ? props.tab : 'user';
@@ -31,7 +33,7 @@ export default function Sidebar(props) {
                 tab === 'playlist' && RenderPlaylist(props.playlist, props.removeVideo)
             }
             {
-                tab === 'settings' && RenderSettings()
+                tab === 'settings' && RenderSettings(props.nickname)
             }
         </Panel>
     )
@@ -74,10 +76,21 @@ function RenderPlaylist(videos, removeVideo) {
     )
 }
 
-function RenderSettings() {
+function RenderSettings(nickname) {
     return (
         <>
-            working
+            <Panel.Block>
+                <Field kind="addons">
+                    <Control>
+                        <Button disabled>
+                            Nickname
+                        </Button>
+                    </Control>
+                    <Control fullwidth>
+                        <Input type={'text'} value={nickname}/>
+                    </Control>
+                </Field>
+            </Panel.Block>
         </>
     )
 }
