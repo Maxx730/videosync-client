@@ -46,7 +46,7 @@ export default function VideoPlayer(props) {
                     })
                 }
                 <Box>
-                    <Player current={props.current} playing={props.playing} onPause={props.onPause} onPlay={props.onPlay}></Player>
+                    <Player video={props.video} current={props.current} playing={props.playing} onPause={props.onPause} onPlay={props.onPlay}></Player>
                 </Box>
             </Section>
         </>

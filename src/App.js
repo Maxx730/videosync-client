@@ -15,6 +15,7 @@ function App() {
   const [tab, setTab] = useState('users');
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [currentVideo, setCurrentVideo] = useState(null);
 
   const nickname = uniqueNamesGenerator({ dictionaries: [adjectives, animals], separator: '', style: 'capital', length: 2 });
 
@@ -36,13 +37,17 @@ function App() {
 
     socket.on('set_player_time', time => {
       setCurrentTime(time);
-    })
+    });
+
+    socket.on('set_video', video => {
+      setCurrentVideo(video);
+    });
   }, []);
 
   return (
     <Columns>
       <Columns.Column paddingless={true} marginless={true} size={8}>
-        <VideoPlayer current={currentTime} playing={playing} onPlay={time => {
+        <VideoPlayer video={currentVideo} current={currentTime} playing={playing} onPlay={time => {
           socket.emit('playing', {playing: true, current: time});
         }} onPause={time => {
           socket.emit('playing', {playing: false, current: time});
