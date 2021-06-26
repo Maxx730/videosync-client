@@ -11,6 +11,7 @@ const SERVER = process.env.NODE_ENV === 'development' ? 'localhost:4000' : 'http
 function App() {
   const socket = socketClient(SERVER, {autoConnect: true});
   const [users, setUsers] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [tab, setTab] = useState('users');
 
   const nickname = uniqueNamesGenerator({ dictionaries: [adjectives, animals], separator: '', style: 'capital', length: 2 });
@@ -18,24 +19,35 @@ function App() {
   useEffect(() => {
     socket.emit('user_login', nickname);
     socket.on('users_updated', users => {
-      setUsers(users);
+      setUsers(users.users);
+      setVideos(users.videos);
+    });
+
+    socket.on('videos_updated', videos => {
+      setVideos(videos);
     });
   }, []);
 
   return (
     <Columns>
       <Columns.Column paddingless={true} marginless={true} size={8}>
-        <VideoPlayer/>
+        <VideoPlayer addVideo={video => {
+          socket.emit('add_video', video);
+        }}/>
       </Columns.Column>
       <Columns.Column paddingless={true} marginless={true} size={4}>
         <Section pl={1}>
-          <Sidebar onChangeTab={tab => {
+          <Sidebar playlist={videos} onChangeTab={tab => {
             setTab(tab);
           }} tab={tab} users={users}/>
         </Section>
       </Columns.Column>
     </Columns>
   );
+}
+
+function AddVideo() {
+
 }
 
 export default App;

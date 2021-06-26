@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
-import {Section, Box, Form} from 'react-bulma-components';
+import {Section, Box, Form, Button, Dropdown} from 'react-bulma-components';
+import SearchResult from './SearchResult';
 
 const { Input, Field, Control, Label } = Form;
 const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=';
@@ -15,8 +16,13 @@ export default function VideoPlayer(props) {
     return (
         <>
             <Section>
-                <Field>
-                    <Control loading={loading}>
+                <Field kind="addons">
+                    <Control>
+                        <Button disabled>
+                            Search
+                        </Button>
+                    </Control>
+                    <Control loading={loading} fullwidth>
                         <Input onChange={async event => {
                             setLoading(true);
                             const video = await FindVideo(event.target.value).then(data => {
@@ -25,14 +31,14 @@ export default function VideoPlayer(props) {
                             }).catch(err => {
                                 console.log(err);
                             });
-                        }} placeholder={'Add Video'}/>
+                        }} placeholder={'URL'}/>
                     </Control>
                 </Field>
-                <Box>
-                    {
-                        renderVideoList(searchList)
-                    }
-                </Box>
+                {
+                    searchList.length > 0 && renderVideoList(searchList, props.addVideo, () => {
+                        setSearchList([]);
+                    })
+                }
                 <Box>
                     <iframe allow="fullscreen" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
                 </Box>
@@ -62,14 +68,21 @@ async function FindVideo(url) {
     });
 }
 
-function renderVideoList(videos) {
+function renderVideoList(videos, addVideo, callback) {
     return (
-        <>
-            {
-                videos && videos.map(video => {
-                    return <span>{video.snippet.title}</span>
-                })
-            }
-        </>
+        <div style={{
+            position: 'relative'
+        }}>
+            <div className='dropdown-content result-list'>
+                {
+                    videos && videos.map(video => {
+                        return <SearchResult addVideo={video => {
+                            addVideo(video);
+                            callback();
+                        }} video={video}/>
+                    })
+                }
+            </div>
+        </div>
     )
 }

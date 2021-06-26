@@ -1,5 +1,5 @@
 import 'bulma/css/bulma.min.css';
-import { Button, Section, Box, Panel, PanelBlock } from 'react-bulma-components';
+import { Button, Section, Box, Panel, PanelBlock, Columns } from 'react-bulma-components';
 
 export default function Sidebar(props) {
     const tab = props.tab ? props.tab : 'user';
@@ -27,7 +27,7 @@ export default function Sidebar(props) {
                 tab === 'users' && RenderUserList(props.users)
             }
             {
-                tab === 'playlist' && RenderPlaylist(props.videos)
+                tab === 'playlist' && RenderPlaylist(props.playlist)
             }
             {
                 tab === 'settings' && RenderSettings()
@@ -52,7 +52,18 @@ function RenderPlaylist(videos) {
     return (
         <>
             {
-                
+                videos.length > 0 ? videos.map(video => {
+                    return <Panel.Block>
+                        <Columns>
+                            <Columns.Column>
+                                {video.snippet.title}
+                            </Columns.Column>
+                            <Columns.Column narrow>
+                                <Button remove />
+                            </Columns.Column>
+                        </Columns>
+                    </Panel.Block>
+                }) : <Panel.Block>Playlist is Empty</Panel.Block>
             }
         </>
     )
