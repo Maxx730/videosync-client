@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Section, Box, Form, Button, Dropdown} from 'react-bulma-components';
 import SearchResult from './SearchResult';
+import YouTube from 'react-youtube';
 
 const { Input, Field, Control, Label } = Form;
 const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=';
@@ -8,6 +9,7 @@ const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/videos?part=id%2C+sni
 export default function VideoPlayer(props) {
     const [loading, setLoading] = useState(false);
     const [searchList, setSearchList] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
 
@@ -23,8 +25,9 @@ export default function VideoPlayer(props) {
                         </Button>
                     </Control>
                     <Control loading={loading} fullwidth>
-                        <Input onChange={async event => {
+                        <Input value={searchTerm} onChange={async event => {
                             setLoading(true);
+                            setSearchTerm(event.target.value);
                             const video = await FindVideo(event.target.value).then(data => {
                                 setLoading(false);
                                 setSearchList(data.items);
@@ -37,10 +40,11 @@ export default function VideoPlayer(props) {
                 {
                     searchList.length > 0 && renderVideoList(searchList, props.addVideo, () => {
                         setSearchList([]);
+                        setSearchTerm('');
                     })
                 }
                 <Box>
-                    <iframe allow="fullscreen" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+                    <YouTube videoId="2g811Eo7K8U" />
                 </Box>
             </Section>
         </>
@@ -59,7 +63,6 @@ async function FindVideo(url) {
                     fetch(YOUTUBE_API + id + '&key=AIzaSyAyAX-avp2SMyHFI4fLTb0jAtX4LqbRQWs').then(response => response.json()).then(data => {
                         resolve(data)
                     }).catch(err => {
-                        console.log(err);
                         reject(err);
                     });
                 }

@@ -1,5 +1,6 @@
 import 'bulma/css/bulma.min.css';
 import { Button, Section, Box, Panel, PanelBlock, Columns } from 'react-bulma-components';
+import Marquee from 'react-fast-marquee';
 
 export default function Sidebar(props) {
     const tab = props.tab ? props.tab : 'user';
@@ -27,7 +28,7 @@ export default function Sidebar(props) {
                 tab === 'users' && RenderUserList(props.users)
             }
             {
-                tab === 'playlist' && RenderPlaylist(props.playlist)
+                tab === 'playlist' && RenderPlaylist(props.playlist, props.removeVideo)
             }
             {
                 tab === 'settings' && RenderSettings()
@@ -48,18 +49,22 @@ function RenderUserList(users) {
     )
 }
 
-function RenderPlaylist(videos) {
+function RenderPlaylist(videos, removeVideo) {
     return (
         <>
             {
-                videos.length > 0 ? videos.map(video => {
+                videos && videos.length > 0 ? videos.map(video => {
                     return <Panel.Block>
                         <Columns>
                             <Columns.Column>
-                                {video.snippet.title}
+                                <Marquee loop={1} gradientWidth={10}>
+                                    {video.snippet.title}
+                                </Marquee>
                             </Columns.Column>
-                            <Columns.Column narrow>
-                                <Button remove />
+                            <Columns.Column narrow className='remove-video-item'>
+                                <Button remove onClick={() => {
+                                    removeVideo(video);
+                                }}/>
                             </Columns.Column>
                         </Columns>
                     </Panel.Block>

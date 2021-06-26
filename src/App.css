@@ -8,3 +8,7 @@ iframe {
     width: 100%;
     z-index: 99;
 }
+
+.remove-video-item {
+    margin-top: 4px;
+}
