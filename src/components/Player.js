@@ -13,7 +13,6 @@ export default function Player(props) {
 
     return (
         <>
-            {props.current}
             <ReactPlayer ref={PlayerRef} controls playing={props.playing} width={'auto'} height={'auto'} onProgress={progress => {
 
             }} onPlay={() => {
@@ -21,7 +20,7 @@ export default function Player(props) {
             }} onPause={() => {
                 props.onPause && props.onPause(PlayerRef.current.getCurrentTime());
             }}
-            url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
+            url='https://www.youtube.com/watch?v=OQlFp2SqB4c' />
         </>
     )
 }

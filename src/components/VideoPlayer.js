@@ -26,12 +26,14 @@ export default function VideoPlayer(props) {
                     </Control>
                     <Control loading={loading} fullwidth>
                         <Input value={searchTerm} onChange={async event => {
-                            setLoading(true);
+                            event.target.value !== '' && setLoading(true);
                             setSearchTerm(event.target.value);
                             const video = await FindVideo(event.target.value).then(data => {
+                                console.log(data);
                                 setLoading(false);
                                 setSearchList(data.items);
                             }).catch(err => {
+                                setLoading(false);
                                 console.log(err);
                             });
                         }} placeholder={'URL'}/>
@@ -67,6 +69,8 @@ async function FindVideo(url) {
                     });
                 }
             });
+        } else {
+            reject('Url does not contain youtube.com');
         }
     });
 }
