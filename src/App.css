@@ -10,5 +10,41 @@ iframe {
 }
 
 .remove-video-item {
-    margin-top: 4px;
+    margin-top: 6px;
+    color: #F44848;
+    cursor: pointer;
+}
+
+.userlist-item {
+    padding-left: 6px;
+}
+
+.playlist-item-play {
+    align-items: center;
+    vertical-align: center;
+    margin-top: 6px;
+    cursor: pointer;
+    color: #0AA653;
+}
+
+.playlist-item-title {
+    margin-top: 6px;
+}
+
+.single-reaction {
+    position: absolute;
+    z-index: 99;
+    bottom: 10px;
+    left: 10px;
+    opacity: .8;
+}
+
+.single-reaction.animating {
+    bottom: 100px;
+    opacity: 0;
+    transition:all 1s linear;
+}
+
+.sync-player {
+    position: relative;
 }

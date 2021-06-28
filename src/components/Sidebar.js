@@ -1,6 +1,8 @@
 import 'bulma/css/bulma.min.css';
 import { Button, Section, Box, Panel, PanelBlock, Columns, Form } from 'react-bulma-components';
 import Marquee from 'react-fast-marquee';
+import { HiUserCircle,HiPlay } from 'react-icons/hi';
+import { RiCloseCircleFill } from 'react-icons/ri';
 
 const { Input, Field, Control, Label } = Form;
 
@@ -27,7 +29,7 @@ export default function Sidebar(props) {
             </Panel.Tabs.Tab>
             </Panel.Tabs>
             {
-                tab === 'users' && RenderUserList(props.users)
+                tab === 'users' && RenderUserList(props.users, props.nickname)
             }
             {
                 tab === 'playlist' && RenderPlaylist(props.playlist, props.removeVideo)
@@ -39,12 +41,12 @@ export default function Sidebar(props) {
     )
 }
 
-function RenderUserList(users) {
+function RenderUserList(users, nickname) {
     return (
         <>
             {
                 users && users.map(user => {
-                    return <Panel.Block renderAs="a">{user.nickname}</Panel.Block>
+                    return <Panel.Block renderAs="a"><HiUserCircle color={nickname === user.nickname ? 'green' : 'black'} size={24}/><span className='userlist-item'>{user.nickname}</span></Panel.Block>
                 })
             }
         </>
@@ -58,15 +60,16 @@ function RenderPlaylist(videos, removeVideo) {
                 videos && videos.length > 0 ? videos.map(video => {
                     return <Panel.Block>
                         <Columns>
+                            <Columns.Column className={'playlist-item-play'} narrow>
+                                <HiPlay size={24}/>
+                            </Columns.Column>
                             <Columns.Column>
-                                <Marquee loop={1} gradientWidth={10}>
+                                <Marquee className={'playlist-item-title'} loop={1} gradientWidth={5}>
                                     {video.snippet.title}
                                 </Marquee>
                             </Columns.Column>
                             <Columns.Column narrow className='remove-video-item'>
-                                <Button remove onClick={() => {
-                                    removeVideo(video);
-                                }}/>
+                                <RiCloseCircleFill size={24}/>
                             </Columns.Column>
                         </Columns>
                     </Panel.Block>
