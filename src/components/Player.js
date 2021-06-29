@@ -49,6 +49,7 @@ export default function Player(props) {
                 <Section fullwidth paddingless>
                     <Button onClick={() => {
                         props.onEnded();
+                        props.onSkipVideo(' skipped the current video.');
                     }} fullwidth my={1}>
                         Skip
                     </Button>

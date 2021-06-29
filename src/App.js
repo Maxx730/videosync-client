@@ -86,6 +86,14 @@ function App() {
       reacts.push(reaction);
       setReactions(reacts);
     });
+
+    socket.on('notify', payload => {
+      toast(payload.user + payload.action, {
+        type: toast.TYPE.INFO,
+        pauseOnFocusLoss: false,
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    });
   }, []);
 
   return (
@@ -102,6 +110,8 @@ function App() {
             socket.emit('add_video', video);
           }} addReaction={reaction => {
             socket.emit('add_reaction', reaction);
+          }} onSkipVideo={message => {
+            socket.emit('notify', {user: nickname, action: message});
           }}/>
         </Columns.Column>
         <Columns.Column paddingless={true} marginless={true} size={4}>

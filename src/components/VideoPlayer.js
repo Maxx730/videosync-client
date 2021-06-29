@@ -49,7 +49,7 @@ export default function VideoPlayer(props) {
                     })
                 }
                 <Box>
-                    <Player addReaction={props.addReaction} reactions={props.reactions} video={props.video} current={props.current} playing={props.playing} onPause={props.onPause} onPlay={props.onPlay} onEnded={props.onEnded}></Player>
+                    <Player onSkipVideo={props.onSkipVideo} addReaction={props.addReaction} reactions={props.reactions} video={props.video} current={props.current} playing={props.playing} onPause={props.onPause} onPlay={props.onPlay} onEnded={props.onEnded}></Player>
                 </Box>
             </Section>
         </>
