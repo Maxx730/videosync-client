@@ -3,10 +3,12 @@ import { Button, Section, Box, Panel, PanelBlock, Columns, Form } from 'react-bu
 import Marquee from 'react-fast-marquee';
 import { HiUserCircle,HiPlay } from 'react-icons/hi';
 import { RiCloseCircleFill } from 'react-icons/ri';
+import { useState } from 'react';
 
 const { Input, Field, Control, Label } = Form;
 
 export default function Sidebar(props) {
+    const [nickname,setNickname] = useState(props.nickname);
     const tab = props.tab ? props.tab : 'user';
 
     return (
@@ -35,7 +37,7 @@ export default function Sidebar(props) {
                 tab === 'playlist' && RenderPlaylist(props.playlist, props.removeVideo)
             }
             {
-                tab === 'settings' && RenderSettings(props.nickname)
+                tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname)
             }
         </Panel>
     )
@@ -79,18 +81,23 @@ function RenderPlaylist(videos, removeVideo) {
     )
 }
 
-function RenderSettings(nickname) {
+function RenderSettings(nickname, setNickname, updateNickname) {
     return (
         <>
             <Panel.Block>
-                <Field kind="addons">
+                <Field kind="addons" style={{
+                    'width': '100%'
+                }}>
                     <Control>
                         <Button disabled>
                             Nickname
                         </Button>
                     </Control>
                     <Control fullwidth>
-                        <Input type={'text'} value={nickname}/>
+                        <Input onChange = {event => {
+                            setNickname(event.target.value)
+                            updateNickname({old: nickname, new: event.target.value});
+                        }} type={'text'} value={nickname}/>
                     </Control>
                 </Field>
             </Panel.Block>

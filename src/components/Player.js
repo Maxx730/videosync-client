@@ -17,7 +17,6 @@ export default function Player(props) {
 
     return (
         <>
-            <span>{props.current}</span>
             {
                 props.video ? <>
                 <div className='sync-player'>

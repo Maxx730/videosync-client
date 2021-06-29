@@ -41,6 +41,7 @@ function App() {
     socket.emit('user_login', nickname);
     
     socket.on('users_updated', users => {
+      console.log(users);
       const user = users.users[users.users.length - 1].nickname;
       if (user !== nickname) {
         toast(user + ' Joined!',{
@@ -102,7 +103,11 @@ function App() {
         </Columns.Column>
         <Columns.Column paddingless={true} marginless={true} size={4}>
           <Section pl={1}>
-            <Sidebar nickname={nickname} removeVideo={video => {
+            <Sidebar nickname={nickname}
+            updateNickname={new_name => {
+              console.log(new_name);
+              socket.emit('update_nickname', new_name);
+            }} removeVideo={video => {
               socket.emit('remove_video', video);
             }} playlist={videos} onChangeTab={tab => {
               setTab(tab);
