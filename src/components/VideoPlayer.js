@@ -80,19 +80,24 @@ async function FindVideo(url) {
 
 function renderVideoList(videos, addVideo, callback) {
     return (
-        <div style={{
-            position: 'relative'
-        }}>
-            <div className='dropdown-content result-list'>
-                {
-                    videos && videos.map(video => {
-                        return <SearchResult addVideo={video => {
-                            addVideo(video);
-                            callback();
-                        }} video={video}/>
-                    })
-                }
+        <>
+            <div className='search-shade'>
+                
             </div>
-        </div>
+            <div style={{
+                position: 'relative'
+            }}>
+                <div className='dropdown-content result-list'>
+                    {
+                        videos && videos.map(video => {
+                            return <SearchResult addVideo={video => {
+                                addVideo(video);
+                                callback();
+                            }} video={video}/>
+                        })
+                    }
+                </div>
+            </div>
+        </>
     )
 }

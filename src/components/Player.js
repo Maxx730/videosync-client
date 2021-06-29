@@ -12,7 +12,7 @@ export default function Player(props) {
     const [reactions, setReactions] = useState([]);
 
     useEffect(() => {
-        console.log(props.reactions)
+
     });
 
     return (
@@ -35,17 +35,24 @@ export default function Player(props) {
                 } 
              </div>
                 {
-                    !showEmoji && <>
+                    false && <>
                         <Picker onSelect={emoji => {
                             props.addReaction && props.addReaction(emoji);
                         }} style={{'width': 'auto'}}/>
+                        <Block>
+                            <Button onClick={() => {
+                                setShowEmoji(!showEmoji);
+                            }} fullwidth>{!showEmoji ? 'Hide' : 'Show Emoji'}</Button>
+                        </Block>
                     </>
                 }
-                <Block>
+                <Section fullwidth paddingless>
                     <Button onClick={() => {
-                        setShowEmoji(!showEmoji);
-                    }} fullwidth>{!showEmoji ? 'Hide' : 'Show Emoji'}</Button>
-                </Block>
+                        props.onEnded();
+                    }} fullwidth my={1}>
+                        Skip
+                    </Button>
+                </Section>
             </> : <div>Playlist Empty</div>
             }
 

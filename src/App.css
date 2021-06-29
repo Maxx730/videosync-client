@@ -66,3 +66,13 @@ iframe {
     padding: 12px;
     width: 100%;
 }
+
+.search-shade {
+    position: absolute;
+    background: black;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    opacity: .5;
+}

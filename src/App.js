@@ -60,14 +60,17 @@ function App() {
     });
 
     socket.on('videos_updated', videos => {
-      setVideos(videos);
-      const video = videos[videos.length - 1].snippet.title;
+      console.log(videos);
+      if (videos.length > 0) {
+        const video = videos[videos.length - 1].snippet.title;
 
-      toast(video + ' Added!',{
-        type: toast.TYPE.SUCCESS, 
-        pauseOnFocusLoss: false,
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
+        toast(video + ' Added!',{
+          type: toast.TYPE.SUCCESS, 
+          pauseOnFocusLoss: false,
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }
+      setVideos(videos);
     });
 
     socket.on('set_player_time', time => {
