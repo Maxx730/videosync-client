@@ -105,8 +105,8 @@ function App() {
           <Section pl={1}>
             <Sidebar nickname={nickname}
             updateNickname={new_name => {
-              console.log(new_name);
               socket.emit('update_nickname', new_name);
+              setNickname(new_name.new);
             }} removeVideo={video => {
               socket.emit('remove_video', video);
             }} playlist={videos} onChangeTab={tab => {

@@ -1,7 +1,7 @@
 import 'bulma/css/bulma.min.css';
-import { Button, Section, Box, Panel, PanelBlock, Columns, Form } from 'react-bulma-components';
+import { Button, Section, Box, Panel, PanelBlock, Columns, Form, Card, Media, Image, Heading, Content } from 'react-bulma-components';
 import Marquee from 'react-fast-marquee';
-import { HiUserCircle,HiPlay } from 'react-icons/hi';
+import { HiUserCircle,HiPlay, HiTrash } from 'react-icons/hi';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { useState } from 'react';
 
@@ -37,7 +37,7 @@ export default function Sidebar(props) {
                 tab === 'playlist' && RenderPlaylist(props.playlist, props.removeVideo)
             }
             {
-                tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname)
+                tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname, props)
             }
         </Panel>
     )
@@ -60,28 +60,62 @@ function RenderPlaylist(videos, removeVideo) {
         <>
             {
                 videos && videos.length > 0 ? videos.map(video => {
-                    return <Panel.Block>
-                        <Columns>
-                            <Columns.Column className={'playlist-item-play'} narrow>
-                                <HiPlay size={24}/>
-                            </Columns.Column>
-                            <Columns.Column>
-                                <Marquee className={'playlist-item-title'} loop={1} gradientWidth={5}>
-                                    {video.snippet.title}
-                                </Marquee>
-                            </Columns.Column>
-                            <Columns.Column narrow className='remove-video-item'>
-                                <RiCloseCircleFill size={24}/>
-                            </Columns.Column>
-                        </Columns>
-                    </Panel.Block>
+                    return <Panel.Block style={{
+                        'overflow': 'hidden',
+                        'position': 'relative',
+                        'display': 'block',
+                        'border': 'none',
+                        'background': 'black'
+                    }}>
+                                <div className='video-list-item-background' style={{
+                                    backgroundImage: `url(${video.snippet.thumbnails.standard.url})`
+                                }}>
+                                </div>
+                                <Card.Content style={{
+                                    height: 100
+                                }}>
+                                    <div className='video-list-item-info'>
+                                        <HiTrash style={{
+                                            position: 'absolute',
+                                            top: '12px',
+                                            right: '12px',
+                                            color: '#F44848',
+                                            cursor: 'pointer',
+                                            zIndex: 999
+                                        }} size={24} onClick={() => {
+                                            removeVideo(video);
+                                        }}/>
+                                        <Media style={{
+                                            position: 'relative',
+                                            display: 'block'
+                                        }}>
+                                            <Media.Item>
+                                                <Heading style={{
+                                                    overflow: 'hidden',
+                                                    whiteSpace: 'nowrap',
+                                                    width: '90%',
+                                                    textOverflow: 'ellipsis',
+                                                    height: '36px',
+                                                    color: 'white'
+                                                }} size={4}>{video.snippet.title}</Heading>
+                                            </Media.Item>
+                                        </Media>
+                                        <Content style={{
+                                            color: 'white',
+                                            width: '90%'
+                                        }}>
+                                                {video.snippet.description.substring(0, 100)}...
+                                        </Content>
+                                    </div>
+                                </Card.Content>
+                            </Panel.Block>
                 }) : <Panel.Block>Playlist is Empty</Panel.Block>
             }
         </>
     )
 }
 
-function RenderSettings(nickname, setNickname, updateNickname) {
+function RenderSettings(nickname, setNickname, updateNickname, props) {
     return (
         <>
             <Panel.Block>
@@ -96,11 +130,36 @@ function RenderSettings(nickname, setNickname, updateNickname) {
                     <Control fullwidth>
                         <Input onChange = {event => {
                             setNickname(event.target.value)
-                            updateNickname({old: nickname, new: event.target.value});
                         }} type={'text'} value={nickname}/>
                     </Control>
+                    {
+                        props.nickname !== nickname && 
+                        <Control>
+                            <Button color={'success'} onClick={() => {
+                                updateNickname({old: props.nickname, new: nickname});
+                            }}>
+                                Save
+                            </Button>
+                        </Control>
+                    }
                 </Field>
             </Panel.Block>
         </>
     )
 }
+
+/*
+                        <Columns>
+                            <Columns.Column className={'playlist-item-play'} narrow>
+                                <HiPlay size={24}/>
+                            </Columns.Column>
+                            <Columns.Column>
+                                <Marquee className={'playlist-item-title'} loop={1} gradientWidth={5}>
+                                    {video.snippet.title}
+                                </Marquee>
+                            </Columns.Column>
+                            <Columns.Column narrow className='remove-video-item'>
+                                <RiCloseCircleFill size={24}/>
+                            </Columns.Column>
+                        </Columns>
+*/

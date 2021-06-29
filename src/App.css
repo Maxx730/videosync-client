@@ -48,3 +48,21 @@ iframe {
 .sync-player {
     position: relative;
 }
+
+.video-list-item-background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: .2;
+    background-position: center;
+}
+
+.video-list-item-info {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 12px;
+    width: 100%;
+}
