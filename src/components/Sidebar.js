@@ -68,7 +68,7 @@ function RenderPlaylist(videos, removeVideo) {
                         'background': 'black'
                     }}>
                                 <div className='video-list-item-background' style={{
-                                    backgroundImage: `url(${video.snippet.thumbnails.standard.url})`
+                                    backgroundImage: `url(${video.snippet.thumbnails.standard ? video.snippet.thumbnails.standard.url : ''})`
                                 }}>
                                 </div>
                                 <Card.Content style={{
