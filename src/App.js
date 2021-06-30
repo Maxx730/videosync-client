@@ -25,7 +25,7 @@ function App() {
   const socket = socketClient(SERVER, {autoConnect: true});
   const [users, setUsers] = useState([]);
   const [videos, setVideos] = useState([]);
-  const [tab, setTab] = useState('users');
+  const [tab, setTab] = useState('playlist');
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [currentVideo, setCurrentVideo] = useState(null);
