@@ -25,6 +25,11 @@ export default function Sidebar(props) {
                 Playlist
                 </Panel.Tabs.Tab>
                 <Panel.Tabs.Tab onClick={event => {
+                    props.onChangeTab && props.onChangeTab('history');
+                }} active={tab === 'history'}>
+                History
+                </Panel.Tabs.Tab>
+                <Panel.Tabs.Tab onClick={event => {
                     props.onChangeTab && props.onChangeTab('settings');
                 }} active={tab === 'settings'}>
                 Settings
@@ -38,6 +43,9 @@ export default function Sidebar(props) {
             }
             {
                 tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname, props)
+            }
+            {
+                tab === 'hisotry' && RenderHistory()
             }
         </Panel>
     )
@@ -148,18 +156,10 @@ function RenderSettings(nickname, setNickname, updateNickname, props) {
     )
 }
 
-/*
-                        <Columns>
-                            <Columns.Column className={'playlist-item-play'} narrow>
-                                <HiPlay size={24}/>
-                            </Columns.Column>
-                            <Columns.Column>
-                                <Marquee className={'playlist-item-title'} loop={1} gradientWidth={5}>
-                                    {video.snippet.title}
-                                </Marquee>
-                            </Columns.Column>
-                            <Columns.Column narrow className='remove-video-item'>
-                                <RiCloseCircleFill size={24}/>
-                            </Columns.Column>
-                        </Columns>
-*/
+function RenderHistory() {
+    return (
+        <div>
+            history
+        </div>
+    )
+}

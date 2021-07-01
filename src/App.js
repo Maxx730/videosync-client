@@ -8,7 +8,7 @@ import {Columns, Tabs, Section} from 'react-bulma-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const SERVER = process.env.NODE_ENV === 'development' ? 'localhost:4000' : 'https://videosync-ku38p.ondigitalocean.app';
+const SERVER = process.env.NODE_ENV === 'development' ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app';
 const custom_nouns = [
   'penis',
   'shaft',
@@ -25,6 +25,7 @@ function App() {
   const socket = socketClient(SERVER, {autoConnect: true});
   const [users, setUsers] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [history, setHistory] = useState([]);
   const [tab, setTab] = useState('playlist');
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -41,7 +42,6 @@ function App() {
     socket.emit('user_login', nickname);
     
     socket.on('users_updated', users => {
-      console.log(users);
       const user = users.users[users.users.length - 1].nickname;
       if (user !== nickname) {
         toast(user + ' Joined!',{
@@ -53,6 +53,10 @@ function App() {
 
       setUsers(users.users);
       setVideos(users.videos);
+    });
+
+    socket.on('history_updated', history => {
+      setHistory(history);
     });
 
     socket.on('start_player', value => {
