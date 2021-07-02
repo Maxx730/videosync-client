@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SERVER = process.env.API_URL !== null ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : process.env.API_URL;
-console.log(SERVER);
+
 const custom_nouns = [
   'penis',
   'shaft',
@@ -19,7 +19,20 @@ const custom_nouns = [
   'fronthole',
   'pube',
   'clit',
-  'taint'
+  'taint',
+  'cunt',
+  'squirter',
+  'butthole',
+  'asspipe',
+  'tit',
+  'nipple',
+  'boner',
+  'shaft',
+  'beefcurtains',
+  'dildo',
+  'fleshlight',
+  'genital',
+  'gash'
 ];
 
 function App() {
