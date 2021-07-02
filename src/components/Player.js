@@ -18,6 +18,7 @@ export default function Player(props) {
     const [mouseDown, setMouseDown] = useState(false);
     const [showVolume, setShowVolume] = useState(false);
     const [volume, setVolume] = useState(1);
+    const [duration, setDuration] = useState(0);
 
     useEffect(() => {
         if (props.moveAction && !props.moveAction.complete) {
@@ -35,16 +36,18 @@ export default function Player(props) {
                 <div className='sync-player'>
                     <ReactPlayer volume={volume} ref={PlayerRef} controls={false} playing={props.playing} width={'auto'} height={'auto'} onProgress={progress => {
 
-            }} onEnded={() => {
-                props.onEnded && props.onEnded();
-            }} onPlay={() => {
-                props.onPlay && props.onPlay(PlayerRef.current.getCurrentTime());
-            }} onPause={() => {
-                props.onPause && props.onPause(PlayerRef.current.getCurrentTime());
-            }} onProgress = {progress => {
-                setProgress(progress.played)
-            }}
-            url={`https://www.youtube.com/watch?v=${props.video.id}`}/>
+                    }} onEnded={() => {
+                        props.onEnded && props.onEnded();
+                    }} onPlay={() => {
+                        props.onPlay && props.onPlay(PlayerRef.current.getCurrentTime());
+                    }} onPause={() => {
+                        props.onPause && props.onPause(PlayerRef.current.getCurrentTime());
+                    }} onProgress = {progress => {
+                        setProgress(progress.played)
+                    }} onReady={() => {
+                        setDuration(PlayerRef.current.getDuration());
+                    }}
+                    url={`https://www.youtube.com/watch?v=${props.video.id}`}/>
                 {
                     renderReactions(props.reactions)
                 } 
@@ -99,14 +102,19 @@ export default function Player(props) {
                         </Popover>
                     </div>
                     <div className={'slider'}>
-                        <Slider progress step={0.01} tooltip={false} max={1} min={0} value={!mouseDown ? progress : null} onChange={value => {
-                            props.seekVideo(value);
-                            setProgress(value);
-                        }} onMouseDown={event => {
-                            setMouseDown(true);
-                        }} onMouseUp={event => {
-                            setMouseDown(false);
-                        }}/>                        
+                        <div className='timestamps'>
+                            {formatVideoTime(progress * duration)} / {formatVideoTime(duration)}
+                        </div>
+                        <div>
+                            <Slider progress step={0.01} tooltip={false} max={1} min={0} value={!mouseDown ? progress : null} onChange={value => {
+                                props.seekVideo(value);
+                                setProgress(value);
+                            }} onMouseDown={event => {
+                                setMouseDown(true);
+                            }} onMouseUp={event => {
+                                setMouseDown(false);
+                            }}/>                              
+                        </div>
                     </div>
                     <div>
                         <IconButton placement={'right'} onClick={() => {
@@ -133,4 +141,11 @@ function renderReactions(emojis) {
             }
         </div>
     )
+}
+
+function formatVideoTime(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+
+    return (minutes > 9 || minutes == 0 ? minutes : '0' + minutes) + ':' + (seconds > 9 ? seconds : '0' + seconds);
 }

@@ -86,5 +86,11 @@ iframe {
 .player-controls .slider {
     flex-grow: 1;
     padding: 0 24px;
-    padding-top: 14px;
+    margin-top: -6px;
+}
+
+.player-controls .timestamps {
+    padding:6px 0;
+    font-size: 12px;
+    font-weight: bold;
 }
