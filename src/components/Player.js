@@ -58,8 +58,8 @@ export default function Player(props) {
                         <ButtonToolbar>
                             <IconButton onClick={() => {
                                 props.playing ? props.onPause(null) : props.onPlay(null);
-                            }} color={props.playing ? 'red' : 'green'} icon={<Icon icon={props.playing ? 'pause' : 'play'} />} placement="left">
-                                {props.playing ? 'Pause' : 'Play'}
+                            }} color={props.playing ? 'red' : 'green'} icon={<Icon size={'large'} icon={props.playing ? 'pause' : 'play'} />} placement="left">
+                                
                             </IconButton>
                         </ButtonToolbar>
                     </div>
@@ -80,7 +80,7 @@ export default function Player(props) {
                         </IconButton>
                         <Popover value={volume} style={{
                             top: -128,
-                            left: 3
+                            left: 10
                         }} visible = {showVolume}>
                             <Slider tooltip={false} onChange={value => {
                                 setVolume(1 - value)
@@ -99,7 +99,7 @@ export default function Player(props) {
                         }}/>                        
                     </div>
                     <div>
-                        <IconButton onClick={() => {
+                        <IconButton placement={'right'} onClick={() => {
                             props.onEnded();
                             props.onSkipVideo(' skipped the current video.');
                         }} icon={<Icon icon='forward' placement='right'/>}>
