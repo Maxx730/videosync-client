@@ -7,6 +7,7 @@ import VideoPlayer from 'components/VideoPlayer';
 import {Columns, Tabs, Section} from 'react-bulma-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'universal-cookie';
 
 const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.indexOf('-dev') > -1 ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app' : 'localhost:4000';
 
@@ -48,6 +49,7 @@ function App() {
     action: null,
     complete: true
   });
+  const [preferences, setPreferences] = useState(new Cookies());
   const [nickname, setNickname] = useState(uniqueNamesGenerator({ 
     dictionaries: [adjectives, custom_nouns],
     separator: '',
@@ -157,7 +159,7 @@ function App() {
               socket.emit('remove_video', video);
             }} playlist={videos} onChangeTab={tab => {
               setTab(tab);
-            }} tab={tab} users={users}/>
+            }} tab={tab} users={users} history={history}/>
           </Section>
         </Columns.Column>
       </Columns>

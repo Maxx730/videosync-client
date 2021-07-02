@@ -4,6 +4,7 @@ import Marquee from 'react-fast-marquee';
 import { HiUserCircle,HiPlay, HiTrash } from 'react-icons/hi';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { useState } from 'react';
+import { IconButton, Icon } from 'rsuite';
 
 const { Input, Field, Control, Label } = Form;
 
@@ -33,7 +34,7 @@ export default function Sidebar(props) {
                     props.onChangeTab && props.onChangeTab('settings');
                 }} active={tab === 'settings'}>
                 Settings
-            </Panel.Tabs.Tab>
+                </Panel.Tabs.Tab>
             </Panel.Tabs>
             {
                 tab === 'users' && RenderUserList(props.users, props.nickname)
@@ -45,7 +46,7 @@ export default function Sidebar(props) {
                 tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname, props)
             }
             {
-                tab === 'hisotry' && RenderHistory()
+                tab === 'history' && RenderHistory(props.history)
             }
         </Panel>
     )
@@ -156,10 +157,19 @@ function RenderSettings(nickname, setNickname, updateNickname, props) {
     )
 }
 
-function RenderHistory() {
+function RenderHistory(history) {
     return (
-        <div>
-            history
-        </div>
+        <>
+            {history.map(item => {
+                return (
+                    <Panel.Block>
+                        <IconButton icon={<Icon icon='clone'/>}>
+
+                        </IconButton>
+                        {item.snippet.title}
+                    </Panel.Block>
+                )
+            })}
+        </>
     )
 }

@@ -43,6 +43,7 @@ export default function Player(props) {
                     }} onPause={() => {
                         props.onPause && props.onPause(PlayerRef.current.getCurrentTime());
                     }} onProgress = {progress => {
+                        setDuration(PlayerRef.current.getDuration());
                         setProgress(progress.played)
                     }} onReady={() => {
                         setDuration(PlayerRef.current.getDuration());
