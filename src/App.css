@@ -76,3 +76,7 @@ iframe {
     right: 0px;
     opacity: .5;
 }
+
+.player-controls {
+    padding: 12px 0;
+}

@@ -65,7 +65,6 @@ function App() {
     });
 
     socket.on('videos_updated', videos => {
-      console.log(videos);
       if (videos.length > 0) {
         const video = videos[videos.length - 1].snippet.title;
 
