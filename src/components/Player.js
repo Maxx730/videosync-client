@@ -6,7 +6,7 @@ import { Section, Block } from 'react-bulma-components';
 import Reaction from './Reaction';
 import { Progress } from 'react-bulma-components';
 import 'rsuite/dist/styles/rsuite-default.css';
-import { Slider, Button, IconButton, Icon, Divider } from 'rsuite';
+import { Slider, Button, IconButton, Icon, Divider, Popover, ButtonToolbar } from 'rsuite';
 import { BsFillPlayFill } from 'react-icons/bs';
 
 export default function Player(props) {
@@ -16,13 +16,15 @@ export default function Player(props) {
     const [reactions, setReactions] = useState([]);
     const [progress, setProgress] = useState(0);
     const [mouseDown, setMouseDown] = useState(false);
+    const [showVolume, setShowVolume] = useState(false);
+    const [volume, setVolume] = useState(1);
 
     return (
         <>
             {
                 props.video ? <>
                 <div className='sync-player'>
-                    <ReactPlayer ref={PlayerRef} controls={false} playing={props.playing} width={'auto'} height={'auto'} onProgress={progress => {
+                    <ReactPlayer volume={volume} ref={PlayerRef} controls={false} playing={props.playing} width={'auto'} height={'auto'} onProgress={progress => {
 
             }} onEnded={() => {
                 props.onEnded && props.onEnded();
@@ -53,9 +55,39 @@ export default function Player(props) {
                 <Divider/>
                 <div className={'player-controls'}>
                     <div>
-                        <IconButton color={props.playing ? 'red' : 'green'} icon={<Icon icon={props.playing ? 'pause' : 'play'} />} placement="left">
-                            {props.playing ? 'Pause' : 'Play'}
+                        <ButtonToolbar>
+                            <IconButton onClick={() => {
+                                props.playing ? props.onPause(null) : props.onPlay(null);
+                            }} color={props.playing ? 'red' : 'green'} icon={<Icon icon={props.playing ? 'pause' : 'play'} />} placement="left">
+                                {props.playing ? 'Pause' : 'Play'}
+                            </IconButton>
+                        </ButtonToolbar>
+                    </div>
+                    <div style={{
+                        position: 'relative'
+                    }}>
+                        {
+                            showVolume && <div className='search-shade' onClick={() => {
+                                setShowVolume(false);
+                            }}></div>
+                        }
+                        
+                        <IconButton style={{
+                            marginLeft: 8
+                        }} onClick={() => {
+                            setShowVolume(true);
+                        }} icon={<Icon icon={'volume-up'} />} placement="left">
                         </IconButton>
+                        <Popover value={volume} style={{
+                            top: -128,
+                            left: 3
+                        }} visible = {showVolume}>
+                            <Slider tooltip={false} onChange={value => {
+                                setVolume(1 - value)
+                            }} style={{
+                                height: 100
+                            }} max={1} min={0} step={0.01} vertical/>
+                        </Popover>
                     </div>
                     <div className={'slider'}>
                         <Slider progress step={0.01} tooltip={false} max={1} min={0} value={!mouseDown ? progress : null} onChange={value => {
