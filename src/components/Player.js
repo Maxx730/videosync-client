@@ -2,11 +2,12 @@ import ReactPlayer from 'react-player';
 import React, {useEffect, useState, createRef, useRef} from 'react';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker, Emoji } from 'emoji-mart';
-import { Button, Section, Block } from 'react-bulma-components';
+import { Section, Block } from 'react-bulma-components';
 import Reaction from './Reaction';
 import { Progress } from 'react-bulma-components';
 import 'rsuite/dist/styles/rsuite-default.css';
-import { Slider, RangeSlider } from 'rsuite';
+import { Slider, Button, IconButton, Icon, Divider } from 'rsuite';
+import { BsFillPlayFill } from 'react-icons/bs';
 
 export default function Player(props) {
 
@@ -49,23 +50,31 @@ export default function Player(props) {
                         </Block>
                     </>
                 }
+                <Divider/>
                 <div className={'player-controls'}>
-                    <Slider progress step={0.01} tooltip={false} max={1} min={0} value={!mouseDown ? progress : null} onChange={value => {
-                        setProgress(value);
-                    }} onMouseDown={event => {
-                        setMouseDown(true);
-                    }} onMouseUp={event => {
-                        setMouseDown(false);
-                    }}/>
+                    <div>
+                        <IconButton color={props.playing ? 'red' : 'green'} icon={<Icon icon={props.playing ? 'pause' : 'play'} />} placement="left">
+                            {props.playing ? 'Pause' : 'Play'}
+                        </IconButton>
+                    </div>
+                    <div className={'slider'}>
+                        <Slider progress step={0.01} tooltip={false} max={1} min={0} value={!mouseDown ? progress : null} onChange={value => {
+                            setProgress(value);
+                        }} onMouseDown={event => {
+                            setMouseDown(true);
+                        }} onMouseUp={event => {
+                            setMouseDown(false);
+                        }}/>                        
+                    </div>
+                    <div>
+                        <IconButton onClick={() => {
+                            props.onEnded();
+                            props.onSkipVideo(' skipped the current video.');
+                        }} icon={<Icon icon='forward' placement='right'/>}>
+                            Skip
+                        </IconButton>
+                    </div>
                 </div>
-                <Section fullwidth paddingless>
-                    <Button onClick={() => {
-                        props.onEnded();
-                        props.onSkipVideo(' skipped the current video.');
-                    }} fullwidth my={1}>
-                        Skip
-                    </Button>
-                </Section>
             </> : <div>Playlist Empty</div>
             }
         </>
