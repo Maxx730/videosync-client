@@ -81,7 +81,9 @@ async function FindVideo(url) {
 function renderVideoList(videos, addVideo, callback) {
     return (
         <>
-            <div className='search-shade'>
+            <div className='search-shade' onClick={() => {
+                callback();
+            }}>
                 
             </div>
             <div style={{
