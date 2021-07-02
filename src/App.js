@@ -8,7 +8,7 @@ import {Columns, Tabs, Section} from 'react-bulma-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const SERVER = process.env.NODE_ENV === 'development' ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app';
+const SERVER = (process.env.NODE_ENV === 'development' || window.location.href.indexOf('-dev') > -1) ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app';
 
 const custom_nouns = [
   'penis',
