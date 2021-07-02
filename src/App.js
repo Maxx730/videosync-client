@@ -8,7 +8,7 @@ import {Columns, Tabs, Section} from 'react-bulma-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const SERVER = (process.env.NODE_ENV === 'development' || window.location.href.indexOf('-dev') > -1) ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app';
+const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.indexOf('-dev') > -1 ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app' : 'localhost:4000';
 
 const custom_nouns = [
   'penis',
@@ -44,6 +44,10 @@ function App() {
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [currentVideo, setCurrentVideo] = useState(null);
+  const [moveAction, setMoveAction] = useState({
+    action: null,
+    complete: true
+  });
   const [nickname, setNickname] = useState(uniqueNamesGenerator({ 
     dictionaries: [adjectives, custom_nouns],
     separator: '',
@@ -111,13 +115,23 @@ function App() {
         position: toast.POSITION.BOTTOM_RIGHT
       });
     });
+
+    socket.on('changing_player_time', time => {
+      setMoveAction({
+        time: time,
+        complete: false,
+        onComplete: () => {
+          setMoveAction({complete: false});
+        }
+      });
+    });
   }, []);
 
   return (
     <>
       <Columns>
         <Columns.Column paddingless={true} marginless={true} size={8}>
-          <VideoPlayer reactions={reactions} video={currentVideo} current={currentTime} playing={playing} onEnded={() => {
+          <VideoPlayer moveAction={moveAction} reactions={reactions} video={currentVideo} current={currentTime} playing={playing} onEnded={() => {
             socket.emit('next_video');
           }} onPlay={time => {
             socket.emit('playing', {playing: true, current: time});
@@ -129,6 +143,8 @@ function App() {
             socket.emit('add_reaction', reaction);
           }} onSkipVideo={message => {
             socket.emit('notify', {user: nickname, action: message});
+          }} seekVideo={value => {
+            socket.emit('change_player_time', value);
           }}/>
         </Columns.Column>
         <Columns.Column paddingless={true} marginless={true} size={4}>

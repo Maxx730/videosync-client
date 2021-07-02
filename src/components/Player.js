@@ -19,6 +19,15 @@ export default function Player(props) {
     const [showVolume, setShowVolume] = useState(false);
     const [volume, setVolume] = useState(1);
 
+    useEffect(() => {
+        if (props.moveAction && !props.moveAction.complete) {
+            if (PlayerRef) {
+                props.moveAction.time && PlayerRef.current.seekTo(props.moveAction.time);
+                props.moveAction.onComplete && props.moveAction.onComplete();
+            }
+        }
+    });
+
     return (
         <>
             {
@@ -91,6 +100,7 @@ export default function Player(props) {
                     </div>
                     <div className={'slider'}>
                         <Slider progress step={0.01} tooltip={false} max={1} min={0} value={!mouseDown ? progress : null} onChange={value => {
+                            props.seekVideo(value);
                             setProgress(value);
                         }} onMouseDown={event => {
                             setMouseDown(true);
