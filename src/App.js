@@ -4,10 +4,11 @@ import {useEffect, useState} from 'react';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import Sidebar from './components/Sidebar';
 import VideoPlayer from 'components/VideoPlayer';
-import {Columns, Tabs, Section} from 'react-bulma-components';
+import {Columns, Panel, Section} from 'react-bulma-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'universal-cookie';
+import { Button, IconButton, Icon } from 'rsuite';
 
 const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.indexOf('-dev') > -1 ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app' : 'localhost:4000';
 
@@ -160,6 +161,13 @@ function App() {
             }} playlist={videos} onChangeTab={tab => {
               setTab(tab);
             }} tab={tab} users={users} history={history}/>
+              <Panel>
+                <Panel.Block>
+                  <IconButton icon={<Icon icon='download'/>} block color='green'>
+                    Download Playlist
+                  </IconButton>
+                </Panel.Block>
+              </Panel>
           </Section>
         </Columns.Column>
       </Columns>
