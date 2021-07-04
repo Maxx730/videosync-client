@@ -80,7 +80,7 @@ function App() {
         case 'add':
           Notification['success']({
             title: `Video Added`,
-            description: <><b>{payload.videos[payload.videos.length - 1].snippet.title}</b></>,
+            description: <><b>{payload.videos[0].snippet.title}</b></>,
             duration: NOTIF_DUR
           });
         break;
@@ -88,7 +88,7 @@ function App() {
         break;
       }
 
-
+      setHistory(payload.history);
       setUsers(payload.users);
       setVideos(payload.videos);
       setCurrentVideo(payload.video);

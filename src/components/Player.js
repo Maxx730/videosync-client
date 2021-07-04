@@ -118,6 +118,17 @@ export default function Player(props) {
                         </div>
                     </div>
                     <div>
+                        <IconButton style={{
+                            marginRight: 8
+                        }} icon={<Icon icon={'arrows-alt'}/>} onClick={() => {
+                            if (PlayerRef !== null) {
+                                PlayerRef.current.getInternalPlayer().h.requestFullscreen();
+                            }
+                        }}>
+
+                        </IconButton>
+                    </div>
+                    <div>
                         <IconButton placement={'right'} onClick={() => {
                             props.onEnded();
                             props.canSkip && props.onSkipVideo({
