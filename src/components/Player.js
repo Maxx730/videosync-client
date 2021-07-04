@@ -120,7 +120,11 @@ export default function Player(props) {
                     <div>
                         <IconButton placement={'right'} onClick={() => {
                             props.onEnded();
-                            props.onSkipVideo(' skipped the current video.');
+                            props.canSkip && props.onSkipVideo({
+                                title: 'Video Skipped',
+                                description: '{User} skipped the current video.',
+                                type: 'warning'
+                            });
                         }} icon={<Icon icon='forward' placement='right'/>}>
                             Skip
                         </IconButton>

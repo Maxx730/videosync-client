@@ -8,8 +8,9 @@ import {Columns, Panel, Section} from 'react-bulma-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'universal-cookie';
-import { Button, IconButton, Icon } from 'rsuite';
+import { Button, IconButton, Icon, Notification } from 'rsuite';
 
+const NOTIF_DUR = 2500;
 const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.indexOf('-dev') > -1 ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app' : 'localhost:4000';
 
 const custom_nouns = [
@@ -62,18 +63,35 @@ function App() {
   useEffect(() => {
     socket.emit('user_login', nickname);
     
-    socket.on('users_updated', users => {
-      const user = users.users[users.users.length - 1].nickname;
-      if (user !== nickname) {
-        toast(user + ' Joined!',{
-          type: toast.TYPE.INFO, 
-          pauseOnFocusLoss: false,
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+    socket.on('state_updated', payload => {
+      switch(payload.action) {
+        case 'joined':
+          const user = payload.users[payload.users.length - 1].nickname;
+          if (user !== nickname) {
+            if (payload.action === 'joined')  {
+              Notification['success']({
+                title: 'User Joined',
+                description: <><b>{user}</b> joined the room.</>,
+                duration: NOTIF_DUR
+              });
+            }
+          }
+        break;
+        case 'add':
+          Notification['success']({
+            title: `Video Added`,
+            description: <><b>{payload.videos[payload.videos.length - 1].snippet.title}</b></>,
+            duration: NOTIF_DUR
+          });
+        break;
+        default: 
+        break;
       }
 
-      setUsers(users.users);
-      setVideos(users.videos);
+
+      setUsers(payload.users);
+      setVideos(payload.videos);
+      setCurrentVideo(payload.video);
     });
 
     socket.on('history_updated', history => {
@@ -82,19 +100,6 @@ function App() {
 
     socket.on('start_player', value => {
       setPlaying(value);
-    });
-
-    socket.on('videos_updated', videos => {
-      if (videos.length > 0) {
-        const video = videos[videos.length - 1].snippet.title;
-
-        toast(video + ' Added!',{
-          type: toast.TYPE.SUCCESS, 
-          pauseOnFocusLoss: false,
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
-      }
-      setVideos(videos);
     });
 
     socket.on('set_player_time', time => {
@@ -112,10 +117,9 @@ function App() {
     });
 
     socket.on('notify', payload => {
-      toast(payload.user + payload.action, {
-        type: toast.TYPE.INFO,
-        pauseOnFocusLoss: false,
-        position: toast.POSITION.BOTTOM_RIGHT
+      Notification[payload.type]({
+        title: payload.title,
+        description: payload.description
       });
     });
 
@@ -144,11 +148,11 @@ function App() {
             socket.emit('add_video', video);
           }} addReaction={reaction => {
             socket.emit('add_reaction', reaction);
-          }} onSkipVideo={message => {
-            socket.emit('notify', {user: nickname, action: message});
+          }} onSkipVideo={notif => {
+            socket.emit('notify', {title: notif.title, type: notif.type, description: notif.description});
           }} seekVideo={value => {
             socket.emit('change_player_time', value);
-          }}/>
+          }} canSkip={videos.length}/>
         </Columns.Column>
         <Columns.Column paddingless={true} marginless={true} size={4}>
           <Section pl={1}>
@@ -171,7 +175,6 @@ function App() {
           </Section>
         </Columns.Column>
       </Columns>
-      <ToastContainer />
     </>
   );
 }
