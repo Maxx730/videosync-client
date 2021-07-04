@@ -160,7 +160,7 @@ function RenderSettings(nickname, setNickname, updateNickname, props) {
 function RenderHistory(history) {
     return (
         <>
-            {history.map(item => {
+            {(history && history.length > 0) && history.map(item => {
                 return (
                     <Panel.Block>
                         <IconButton icon={<Icon icon='clone'/>}>
