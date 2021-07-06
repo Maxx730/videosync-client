@@ -1,8 +1,10 @@
 import {useEffect, useState} from 'react';
-import {Section, Box, Form, Button, Dropdown} from 'react-bulma-components';
+import {Section, Box, Form, Button, Dropdown, Heading, Content} from 'react-bulma-components';
 import SearchResult from './SearchResult';
 import Player from './Player';
 import { HiOutlineSearch } from 'react-icons/hi';
+import Marquee from 'react-fast-marquee';
+import { IconButton, Icon } from 'rsuite';
 
 const { Input, Field, Control, Label } = Form;
 const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=';
@@ -51,6 +53,26 @@ export default function VideoPlayer(props) {
                 <Box>
                     <Player canSkip={props.canSkip} seekVideo={props.seekVideo} moveAction={props.moveAction} onSkipVideo={props.onSkipVideo} addReaction={props.addReaction} reactions={props.reactions} video={props.video} current={props.current} playing={props.playing} onPause={props.onPause} onPlay={props.onPlay} onEnded={props.onEnded}></Player>
                 </Box>
+                {props.video && 
+                    <Box>
+                        <Heading>
+                            <Marquee gradient={false} style={{
+                                overflow: 'visible',
+                                height: 45
+                            }} gradientWidth={10} loop={1}>
+                                {props.video.snippet.title}
+                            </Marquee>
+                        </Heading>
+                        <Heading subtitle>
+                            {props.video.snippet.channelTitle}
+                        </Heading>
+                        <Content>
+                            <IconButton color={'red'} icon={<Icon icon="youtube-play" />} placement="left">
+                                Open on YouTube
+                            </IconButton>
+                        </Content>
+                    </Box>
+                }
             </Section>
         </>
     )

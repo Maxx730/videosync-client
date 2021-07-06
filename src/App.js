@@ -72,6 +72,12 @@ function App() {
 
   useEffect(() => {
     socket.emit('user_login', nickname);
+
+    socket.on('request_current_time', () => {
+      if (playing && currentTime) {
+        socket.emit('receive_current_time', currentTime);
+      }
+    });
     
     socket.on('state_updated', payload => {
       switch(payload.action) {
@@ -101,6 +107,13 @@ function App() {
             duration: NOTIF_DUR
           });
         break;
+        case 'disconnect':
+          Notification['warning']({
+            title: `User Left`,
+            description: <><b>{payload.user}</b> left the room.</>,
+            duration: NOTIF_DUR
+          });
+        break;
         default: 
         break;
       }
@@ -109,10 +122,10 @@ function App() {
       setUsers(payload.users);
       setVideos(payload.videos);
       setCurrentVideo(payload.video);
-    });
 
-    socket.on('history_updated', history => {
-      setHistory(history);
+      if (currentVideo) {
+        socket.emit('request_current_time');
+      }
     });
 
     socket.on('start_player', value => {
@@ -125,12 +138,6 @@ function App() {
 
     socket.on('set_video', video => {
       setCurrentVideo(video);
-    });
-
-    socket.on('show_reaction', reaction => {
-      const reacts = [...reactions];
-      reacts.push(reaction);
-      setReactions(reacts);
     });
 
     socket.on('changing_player_time', time => {
