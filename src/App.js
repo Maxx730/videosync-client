@@ -123,7 +123,7 @@ function App() {
       setVideos(payload.videos);
       setCurrentVideo(payload.video);
 
-      if (currentVideo) {
+      if (!currentVideo) {
         socket.emit('request_current_time');
       }
     });
