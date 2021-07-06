@@ -35,7 +35,17 @@ const custom_nouns = [
   'dildo',
   'fleshlight',
   'genital',
-  'gash'
+  'gash',
+  'scum',
+  'fart',
+  'stank',
+  'autism',
+  'asbergers',
+  'grandmother',
+  'rapist',
+  'molester',
+  'wart',
+  'pimple'
 ];
 
 function App() {
@@ -84,6 +94,13 @@ function App() {
             duration: NOTIF_DUR
           });
         break;
+        case 'skip':
+          Notification['warning']({
+            title: `Video Skipped`,
+            description: <><b>{payload.user}</b> skipped the current video.</>,
+            duration: NOTIF_DUR
+          });
+        break;
         default: 
         break;
       }
@@ -116,13 +133,6 @@ function App() {
       setReactions(reacts);
     });
 
-    socket.on('notify', payload => {
-      Notification[payload.type]({
-        title: payload.title,
-        description: payload.description
-      });
-    });
-
     socket.on('changing_player_time', time => {
       setMoveAction({
         time: time,
@@ -139,7 +149,9 @@ function App() {
       <Columns>
         <Columns.Column paddingless={true} marginless={true} size={8}>
           <VideoPlayer moveAction={moveAction} reactions={reactions} video={currentVideo} current={currentTime} playing={playing} onEnded={() => {
-            socket.emit('next_video');
+            socket.emit('next_video', {
+              user: nickname
+            });
           }} onPlay={time => {
             socket.emit('playing', {playing: true, current: time});
           }} onPause={time => {
@@ -149,7 +161,7 @@ function App() {
           }} addReaction={reaction => {
             socket.emit('add_reaction', reaction);
           }} onSkipVideo={notif => {
-            socket.emit('notify', {title: notif.title, type: notif.type, description: notif.description});
+
           }} seekVideo={value => {
             socket.emit('change_player_time', value);
           }} canSkip={videos.length}/>

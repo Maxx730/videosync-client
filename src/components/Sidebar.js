@@ -160,16 +160,24 @@ function RenderSettings(nickname, setNickname, updateNickname, props) {
 function RenderHistory(history) {
     return (
         <>
-            {(history && history.length > 0) && history.map(item => {
+            {(history && history.length > 0) ? history.map(item => {
                 return (
                     <Panel.Block>
                         <IconButton icon={<Icon icon='clone'/>}>
 
                         </IconButton>
-                        {item.snippet.title}
+                        <div className={'history-item-title'}>
+                            <Marquee gradientWidth={20} loop={1} pauseOnHover={true}>
+                                {item.snippet.title}
+                            </Marquee>
+                        </div>
                     </Panel.Block>
                 )
-            })}
+            }) : 
+            <Panel.Block>
+                No History    
+            </Panel.Block>
+            }
         </>
     )
 }

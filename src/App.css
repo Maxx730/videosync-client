@@ -94,3 +94,7 @@ iframe {
     font-size: 12px;
     font-weight: bold;
 }
+
+.history-item-title {
+    padding: 0 12px;
+}

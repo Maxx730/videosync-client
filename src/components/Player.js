@@ -131,11 +131,6 @@ export default function Player(props) {
                     <div>
                         <IconButton placement={'right'} onClick={() => {
                             props.onEnded();
-                            props.canSkip && props.onSkipVideo({
-                                title: 'Video Skipped',
-                                description: '{User} skipped the current video.',
-                                type: 'warning'
-                            });
                         }} icon={<Icon icon='forward' placement='right'/>}>
                             Skip
                         </IconButton>
@@ -160,8 +155,9 @@ function renderReactions(emojis) {
 }
 
 function formatVideoTime(time) {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
+    const hours = Math.floor((time / 60) / 60);
+    const minutes = Math.floor((time / 60) % 60);
+    const seconds = Math.ceil((time - ((hours * 60) + (minutes * 60))) % 60);
 
-    return (minutes > 9 || minutes == 0 ? minutes : '0' + minutes) + ':' + (seconds > 9 ? seconds : '0' + seconds);
+    return (hours > 0 ? hours + ':' : '') + (minutes > 9 || minutes == 0 ? minutes : '0' + minutes) + ':' + (seconds > 9 ? seconds : '0' + seconds);
 }
