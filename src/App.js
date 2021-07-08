@@ -37,6 +37,7 @@ function App() {
     length: 2 
   }));
   const [reactions, setReactions] = useState([]);
+  const [banner, setBanner] = useState('Now With Chiken');
 
   useEffect(() => {
     socket.emit('user_login', nickname);
@@ -88,6 +89,9 @@ function App() {
             description: <><b>{payload.user}</b> changed their name.</>,
             duration: NOTIF_DUR
           });
+        break;
+        case 'banner':
+          setBanner(payload.banner);
         break;
         default: 
         break;
@@ -156,7 +160,11 @@ function App() {
               setNickname(new_name.new);
 
               preferences.set('video-sync-username', new_name.new);
-            }} removeVideo={video => {
+            }}
+            onSetBanner={value => {
+              socket.emit('set_banner', value);
+            }}
+            removeVideo={video => {
               socket.emit('remove_video', video);
             }} playlist={videos} onChangeTab={tab => {
               setTab(tab);
@@ -172,9 +180,7 @@ function App() {
         </Columns.Column>
       </Columns>
       <h1 className={'yikes'}>
-        <span>Now</span>
-        <span>With</span>
-        <span>Chicken</span>
+        <span>{banner}</span>
       </h1>
     </>
   );

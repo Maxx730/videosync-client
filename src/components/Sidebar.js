@@ -50,7 +50,9 @@ export default function Sidebar(props) {
                 tab === 'playlist' && RenderPlaylist(props.playlist, props.removeVideo)
             }
             {
-                tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname, props, randomName, setRandomName)
+                tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname, props, randomName, setRandomName, {
+                    onSetBanner: props.onSetBanner
+                })
             }
             {
                 tab === 'history' && RenderHistory(props.history)
@@ -131,7 +133,7 @@ function RenderPlaylist(videos, removeVideo) {
     )
 }
 
-function RenderSettings(nickname, setNickname, updateNickname, props, randomName, setRandomName) {
+function RenderSettings(nickname, setNickname, updateNickname, props, randomName, setRandomName, methods) {
     return (
         <>
             <Panel.Block>
@@ -166,13 +168,15 @@ function RenderSettings(nickname, setNickname, updateNickname, props, randomName
                 }}>
                     <Control>
                         <Button onClick={() => {
-                            setRandomName(
-                                uniqueNamesGenerator({ 
+                            const name = uniqueNamesGenerator({ 
                                 dictionaries: [adjectives, CustomNouns],
                                 separator: '',
                                 style: 'capital',
                                 length: 2 
-                              })
+                            });
+                            methods.onSetBanner && methods.onSetBanner(name);
+                            setRandomName(
+                                name
                             );
                         }}>
                             Generate Name
