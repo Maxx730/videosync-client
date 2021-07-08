@@ -60,7 +60,8 @@ function App() {
                 duration: NOTIF_DUR
               });
             }
-          } 
+          }
+          setBanner(payload.banner);
         break;
         case 'add':
           Notification['success']({
