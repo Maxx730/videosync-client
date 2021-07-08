@@ -5,12 +5,19 @@ import { HiUserCircle,HiPlay, HiTrash } from 'react-icons/hi';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { useState } from 'react';
 import { IconButton, Icon } from 'rsuite';
+import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
+import CustomNouns from 'lib/CustomNouns';
 
 const { Input, Field, Control, Label } = Form;
 
 export default function Sidebar(props) {
     const [nickname,setNickname] = useState(props.nickname);
+    const [randomName, setRandomName] = useState(null);
     const tab = props.tab ? props.tab : 'user';
+
+    useState(() => {
+        setNickname(props.nickname);
+    });
 
     return (
         <Panel>
@@ -43,7 +50,7 @@ export default function Sidebar(props) {
                 tab === 'playlist' && RenderPlaylist(props.playlist, props.removeVideo)
             }
             {
-                tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname, props)
+                tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname, props, randomName, setRandomName)
             }
             {
                 tab === 'history' && RenderHistory(props.history)
@@ -124,7 +131,7 @@ function RenderPlaylist(videos, removeVideo) {
     )
 }
 
-function RenderSettings(nickname, setNickname, updateNickname, props) {
+function RenderSettings(nickname, setNickname, updateNickname, props, randomName, setRandomName) {
     return (
         <>
             <Panel.Block>
@@ -151,6 +158,29 @@ function RenderSettings(nickname, setNickname, updateNickname, props) {
                             </Button>
                         </Control>
                     }
+                </Field>
+            </Panel.Block>
+            <Panel.Block>
+                <Field kind='addons' style={{
+                    'width': '100%'
+                }}>
+                    <Control>
+                        <Button onClick={() => {
+                            setRandomName(
+                                uniqueNamesGenerator({ 
+                                dictionaries: [adjectives, CustomNouns],
+                                separator: '',
+                                style: 'capital',
+                                length: 2 
+                              })
+                            );
+                        }}>
+                            Generate Name
+                        </Button>
+                    </Control>
+                    <Control fullwidth>
+                        <Input value={randomName}/>
+                    </Control>
                 </Field>
             </Panel.Block>
         </>

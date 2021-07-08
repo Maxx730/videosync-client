@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import socketClient from 'socket.io-client';
 import {useEffect, useState} from 'react';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
@@ -9,44 +9,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'universal-cookie';
 import { Button, IconButton, Icon, Notification } from 'rsuite';
+import CustomNouns from './lib/CustomNouns';
+
 
 const NOTIF_DUR = 2500;
 const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.indexOf('-dev') > -1 ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app' : 'localhost:4000';
 
-const custom_nouns = [
-  'penis',
-  'shaft',
-  'balls',
-  'vagina',
-  'snatch',
-  'fronthole',
-  'pube',
-  'clit',
-  'taint',
-  'cunt',
-  'squirter',
-  'butthole',
-  'asspipe',
-  'tit',
-  'nipple',
-  'boner',
-  'shaft',
-  'beefcurtains',
-  'dildo',
-  'fleshlight',
-  'genital',
-  'gash',
-  'scum',
-  'fart',
-  'stank',
-  'autism',
-  'asbergers',
-  'grandmother',
-  'rapist',
-  'molester',
-  'wart',
-  'pimple'
-];
 
 function App() {
   const socket = socketClient(SERVER, {autoConnect: true});
@@ -62,8 +30,8 @@ function App() {
     complete: true
   });
   const [preferences, setPreferences] = useState(new Cookies());
-  const [nickname, setNickname] = useState(uniqueNamesGenerator({ 
-    dictionaries: [adjectives, custom_nouns],
+  const [nickname, setNickname] = useState(preferences.get('video-sync-username') ? preferences.get('video-sync-username') : uniqueNamesGenerator({ 
+    dictionaries: [adjectives, CustomNouns],
     separator: '',
     style: 'capital',
     length: 2 
@@ -71,8 +39,7 @@ function App() {
   const [reactions, setReactions] = useState([]);
 
   useEffect(() => {
-    const savedName = preferences.get('video-sync-username');
-    socket.emit('user_login', savedName ? savedName : nickname);
+    socket.emit('user_login', nickname);
 
     socket.on('request_current_time', () => {
       if (playing && currentTime) {
@@ -92,7 +59,7 @@ function App() {
                 duration: NOTIF_DUR
               });
             }
-          }
+          } 
         break;
         case 'add':
           Notification['success']({
@@ -204,6 +171,11 @@ function App() {
           </Section>
         </Columns.Column>
       </Columns>
+      <h1 className={'yikes'}>
+        <span>Now</span>
+        <span>With</span>
+        <span>Chicken</span>
+      </h1>
     </>
   );
 }
