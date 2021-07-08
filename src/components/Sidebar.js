@@ -144,7 +144,7 @@ function RenderSettings(nickname, setNickname, updateNickname, props) {
                     {
                         props.nickname !== nickname && 
                         <Control>
-                            <Button color={'success'} onClick={() => {
+                            <Button className='rs-btn-green' onClick={() => {
                                 updateNickname({old: props.nickname, new: nickname});
                             }}>
                                 Save

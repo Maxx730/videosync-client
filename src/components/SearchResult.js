@@ -1,13 +1,14 @@
 import {Card, Dropdown, Heading, Image, Columns} from 'react-bulma-components';
+import { IconButton, Icon } from 'rsuite';
 
 export default function SearchResult(props) {
     return (
-        <Dropdown.Item renderAs='a' onClick={event => {
+        <Dropdown.Item onClick={event => {
             props.addVideo && props.addVideo(props.video);
         }}>
             <Columns>
                 <Columns.Column narrow>
-                    <Image size={128} src={props.video ? props.video.snippet.thumbnails.default.url : ''}></Image>
+                    <IconButton color='green' icon={<Icon icon="plus" />} />
                 </Columns.Column>
                 <Columns.Column>
                     <Heading size={6}>
@@ -16,6 +17,11 @@ export default function SearchResult(props) {
                     <Heading subtitle size={6}>
                         {props.video && props.video.snippet.channelTitle}
                     </Heading>
+                </Columns.Column>
+                <Columns.Column narrow>
+                    <IconButton color={'red'} icon={<Icon icon="youtube-play" />} placement="left">
+                        Open on YouTube
+                    </IconButton>
                 </Columns.Column>
             </Columns>
         </Dropdown.Item>

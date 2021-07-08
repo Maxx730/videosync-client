@@ -71,7 +71,8 @@ function App() {
   const [reactions, setReactions] = useState([]);
 
   useEffect(() => {
-    socket.emit('user_login', nickname);
+    const savedName = preferences.get('video-sync-username');
+    socket.emit('user_login', savedName ? savedName : nickname);
 
     socket.on('request_current_time', () => {
       if (playing && currentTime) {
@@ -111,6 +112,13 @@ function App() {
           Notification['warning']({
             title: `User Left`,
             description: <><b>{payload.user}</b> left the room.</>,
+            duration: NOTIF_DUR
+          });
+        break;
+        case 'name_update':
+          Notification['success']({
+            title: `Username Changed`,
+            description: <><b>{payload.user}</b> changed their name.</>,
             duration: NOTIF_DUR
           });
         break;
@@ -179,6 +187,8 @@ function App() {
             updateNickname={new_name => {
               socket.emit('update_nickname', new_name);
               setNickname(new_name.new);
+
+              preferences.set('video-sync-username', new_name.new);
             }} removeVideo={video => {
               socket.emit('remove_video', video);
             }} playlist={videos} onChangeTab={tab => {

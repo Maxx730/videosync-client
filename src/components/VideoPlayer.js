@@ -55,17 +55,6 @@ export default function VideoPlayer(props) {
                 </Box>
                 {props.video && 
                     <Box>
-                        <Heading>
-                            <Marquee gradient={false} style={{
-                                overflow: 'visible',
-                                height: 45
-                            }} gradientWidth={10} loop={1}>
-                                {props.video.snippet.title}
-                            </Marquee>
-                        </Heading>
-                        <Heading subtitle>
-                            {props.video.snippet.channelTitle}
-                        </Heading>
                         <Content>
                             <IconButton color={'red'} icon={<Icon icon="youtube-play" />} placement="left">
                                 Open on YouTube
