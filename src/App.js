@@ -17,7 +17,7 @@ const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.i
 
 
 function App() {
-  const socket = socketClient(SERVER, {autoConnect: true});
+  const socket = socketClient(SERVER, {autoConnect: true, pingInterval: 1000, transports: ['websocket']});
   const [users, setUsers] = useState([]);
   const [videos, setVideos] = useState([]);
   const [history, setHistory] = useState([]);
