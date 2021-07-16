@@ -170,13 +170,6 @@ function App() {
             }} playlist={videos} onChangeTab={tab => {
               setTab(tab);
             }} tab={tab} users={users} history={history}/>
-              <Panel>
-                <Panel.Block>
-                  <IconButton icon={<Icon icon='download'/>} block color='green'>
-                    Download Playlist
-                  </IconButton>
-                </Panel.Block>
-              </Panel>
           </Section>
         </Columns.Column>
       </Columns>
