@@ -12,12 +12,12 @@ import { Button, IconButton, Icon, Notification } from 'rsuite';
 import CustomNouns from './lib/CustomNouns';
 
 
-const NOTIF_DUR = 2500;
+const NOTIF_DUR = 1500;
 const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.indexOf('-dev') > -1 ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app' : 'localhost:4000';
 
 
 function App() {
-  const socket = socketClient(SERVER, {autoConnect: true, pingInterval: 1000, transports: ['websocket']});
+  const socket = socketClient(SERVER, {autoConnect: true, pingInterval: 100, transports: ['websocket']});
   const [users, setUsers] = useState([]);
   const [videos, setVideos] = useState([]);
   const [history, setHistory] = useState([]);
@@ -173,9 +173,6 @@ function App() {
           </Section>
         </Columns.Column>
       </Columns>
-      <h1 className={'yikes'}>
-        <span>{banner}</span>
-      </h1>
     </>
   );
 }
