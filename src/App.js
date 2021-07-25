@@ -15,7 +15,7 @@ import ServerStatus from './components/ServerStatus';
 
 
 const NOTIF_DUR = 1500;
-const DEV_MODE = process.env.NODE_ENV === 'development';
+const DEV_MODE = false;//process.env.NODE_ENV === 'development';
 const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.indexOf('-dev') > -1 ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app' : 'localhost:4000';
 
 
@@ -44,14 +44,9 @@ function App() {
   const [serverStatus, setServerStatus] = useState('idle');
 
   useEffect(() => {
-    socket.emit('user_login', nickname);
+    //Join the room when the user loads the page.
+    socket.emit('user_joined', nickname);
 
-    socket.on('request_current_time', () => {
-      if (playing && currentTime) {
-        socket.emit('receive_current_time', currentTime);
-      }
-    });
-    
     socket.on('state_updated', payload => {
       switch(payload.action) {
         case 'joined':
@@ -65,16 +60,15 @@ function App() {
               });
             }
           }
-          setBanner(payload.banner);
         break;
-        case 'add':
+        case 'add_video':
           Notification['success']({
             title: `Video Added`,
             description: <><b>{payload.videos[0].snippet.title}</b></>,
             duration: NOTIF_DUR
           });
         break;
-        case 'skip':
+        case 'skip_video':
           Notification['warning']({
             title: `Video Skipped`,
             description: <><b>{payload.user}</b> skipped the current video.</>,
@@ -102,37 +96,12 @@ function App() {
         break;
       }
 
+      setPlaying(payload.playing);
       setHistory(payload.history);
       setUsers(payload.users);
       setVideos(payload.videos);
       setCurrentVideo(payload.video);
       setServerStatus(payload.status);
-
-      if (!currentVideo) {
-        socket.emit('request_current_time');
-      }
-    });
-
-    socket.on('start_player', value => {
-      setPlaying(value);
-    });
-
-    socket.on('set_player_time', time => {
-      setCurrentTime(time);
-    });
-
-    socket.on('set_video', video => {
-      setCurrentVideo(video);
-    });
-
-    socket.on('changing_player_time', time => {
-      setMoveAction({
-        time: time,
-        complete: false,
-        onComplete: () => {
-          setMoveAction({complete: false});
-        }
-      });
     });
   }, []);
 
@@ -146,9 +115,9 @@ function App() {
                 user: nickname
               });
             }} onPlay={time => {
-              socket.emit('playing', {playing: true, current: time});
+              socket.emit('play_pause', {playing: true});
             }} onPause={time => {
-              socket.emit('playing', {playing: false, current: time});
+              socket.emit('play_pause', {playing: false});
             }} addVideo={video => {
               socket.emit('add_video', video);
             }} addReaction={reaction => {
@@ -157,7 +126,11 @@ function App() {
 
             }} seekVideo={value => {
               socket.emit('change_player_time', value);
-            }} canSkip={videos.length} devMode={DEV_MODE}/>
+            }} canSkip={videos.length} devMode={DEV_MODE} runTestVideo={() => {
+              socket.emit('test_video', {
+
+              });
+            }}/>
           </Columns.Column>
           <Columns.Column paddingless={true} marginless={true} size={4}>
             <Section pl={1}>
