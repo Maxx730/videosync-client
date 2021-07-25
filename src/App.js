@@ -42,11 +42,9 @@ function App() {
   const [reactions, setReactions] = useState([]);
   const [banner, setBanner] = useState('Now With Chiken');
   const [serverStatus, setServerStatus] = useState('idle');
+  const [lastUpdate, setLastUpdate] = useState(null);
 
   useEffect(() => {
-    //Keep alive interval timer to prevent disconnections when the tab is not focused
-    setInterval(() => socket.emit('keep_alive', nickname), 1000);
-
     //Join the room when the user loads the page.
     socket.emit('user_joined', nickname);
 
@@ -99,6 +97,7 @@ function App() {
         break;
       }
 
+      setLastUpdate(payload.lastUpdate);
       setPlaying(payload.playing);
       setHistory(payload.history);
       setUsers(payload.users);
@@ -137,7 +136,7 @@ function App() {
           </Columns.Column>
           <Columns.Column paddingless={true} marginless={true} size={4}>
             <Section pl={1}>
-              <ServerStatus status={serverStatus}/>
+              <ServerStatus lastUpdate={lastUpdate} status={serverStatus}/>
               <Sidebar nickname={nickname}
               updateNickname={new_name => {
                 socket.emit('update_nickname', new_name);
