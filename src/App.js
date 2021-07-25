@@ -44,6 +44,9 @@ function App() {
   const [serverStatus, setServerStatus] = useState('idle');
 
   useEffect(() => {
+    //Keep alive interval timer to prevent disconnections when the tab is not focused
+    setInterval(() => socket.emit('keep_alive', nickname), 1000);
+
     //Join the room when the user loads the page.
     socket.emit('user_joined', nickname);
 
