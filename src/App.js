@@ -10,9 +10,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'universal-cookie';
 import { Button, IconButton, Icon, Notification } from 'rsuite';
 import CustomNouns from './lib/CustomNouns';
+import Credits from './components/Credits';
+import ServerStatus from './components/ServerStatus';
 
 
 const NOTIF_DUR = 1500;
+const DEV_MODE = process.env.NODE_ENV === 'development';
 const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.indexOf('-dev') > -1 ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app' : 'localhost:4000';
 
 
@@ -38,6 +41,7 @@ function App() {
   }));
   const [reactions, setReactions] = useState([]);
   const [banner, setBanner] = useState('Now With Chiken');
+  const [serverStatus, setServerStatus] = useState('idle');
 
   useEffect(() => {
     socket.emit('user_login', nickname);
@@ -102,6 +106,7 @@ function App() {
       setUsers(payload.users);
       setVideos(payload.videos);
       setCurrentVideo(payload.video);
+      setServerStatus(payload.status);
 
       if (!currentVideo) {
         socket.emit('request_current_time');
@@ -132,48 +137,54 @@ function App() {
   }, []);
 
   return (
-    <>
-      <Columns>
-        <Columns.Column paddingless={true} marginless={true} size={8}>
-          <VideoPlayer moveAction={moveAction} reactions={reactions} video={currentVideo} current={currentTime} playing={playing} onEnded={() => {
-            socket.emit('next_video', {
-              user: nickname
-            });
-          }} onPlay={time => {
-            socket.emit('playing', {playing: true, current: time});
-          }} onPause={time => {
-            socket.emit('playing', {playing: false, current: time});
-          }} addVideo={video => {
-            socket.emit('add_video', video);
-          }} addReaction={reaction => {
-            socket.emit('add_reaction', reaction);
-          }} onSkipVideo={notif => {
+    <div className='app-body'>
+      <div className='top'>
+        <Columns>
+          <Columns.Column paddingless={true} marginless={true} size={8}>
+            <VideoPlayer moveAction={moveAction} reactions={reactions} video={currentVideo} current={currentTime} playing={playing} onEnded={() => {
+              socket.emit('next_video', {
+                user: nickname
+              });
+            }} onPlay={time => {
+              socket.emit('playing', {playing: true, current: time});
+            }} onPause={time => {
+              socket.emit('playing', {playing: false, current: time});
+            }} addVideo={video => {
+              socket.emit('add_video', video);
+            }} addReaction={reaction => {
+              socket.emit('add_reaction', reaction);
+            }} onSkipVideo={notif => {
 
-          }} seekVideo={value => {
-            socket.emit('change_player_time', value);
-          }} canSkip={videos.length}/>
-        </Columns.Column>
-        <Columns.Column paddingless={true} marginless={true} size={4}>
-          <Section pl={1}>
-            <Sidebar nickname={nickname}
-            updateNickname={new_name => {
-              socket.emit('update_nickname', new_name);
-              setNickname(new_name.new);
+            }} seekVideo={value => {
+              socket.emit('change_player_time', value);
+            }} canSkip={videos.length} devMode={DEV_MODE}/>
+          </Columns.Column>
+          <Columns.Column paddingless={true} marginless={true} size={4}>
+            <Section pl={1}>
+              <ServerStatus status={serverStatus}/>
+              <Sidebar nickname={nickname}
+              updateNickname={new_name => {
+                socket.emit('update_nickname', new_name);
+                setNickname(new_name.new);
 
-              preferences.set('video-sync-username', new_name.new);
-            }}
-            onSetBanner={value => {
-              socket.emit('set_banner', value);
-            }}
-            removeVideo={video => {
-              socket.emit('remove_video', video);
-            }} playlist={videos} onChangeTab={tab => {
-              setTab(tab);
-            }} tab={tab} users={users} history={history}/>
-          </Section>
-        </Columns.Column>
-      </Columns>
-    </>
+                preferences.set('video-sync-username', new_name.new);
+              }}
+              onSetBanner={value => {
+                socket.emit('set_banner', value);
+              }}
+              removeVideo={video => {
+                socket.emit('remove_video', video);
+              }} playlist={videos} onChangeTab={tab => {
+                setTab(tab);
+              }} tab={tab} users={users} history={history}/>
+            </Section>
+          </Columns.Column>
+        </Columns>      
+      </div>
+      <div className='bottom'>
+        <Credits/>
+      </div>
+    </div>
   );
 }
 

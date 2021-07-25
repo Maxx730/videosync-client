@@ -22,6 +22,7 @@ export default function VideoPlayer(props) {
     return (
         <>
             <Section>
+                {props.devMode ? <Button onClick={props.runTestVideo} fullwidth>Run Test Video</Button> : 
                 <Field kind="addons">
                     <Control>
                         <Button disabled>
@@ -44,6 +45,7 @@ export default function VideoPlayer(props) {
                         }} placeholder={'URL'}/>
                     </Control>
                 </Field>
+                }
                 {
                     searchList.length > 0 && renderVideoList(searchList, props.addVideo, () => {
                         setSearchList([]);

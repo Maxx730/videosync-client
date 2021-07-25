@@ -4,7 +4,7 @@ import Marquee from 'react-fast-marquee';
 import { HiUserCircle,HiPlay, HiTrash } from 'react-icons/hi';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { useState } from 'react';
-import { IconButton, Icon } from 'rsuite';
+import { IconButton, Icon, ButtonGroup, List } from 'rsuite';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import CustomNouns from 'lib/CustomNouns';
 
@@ -75,61 +75,43 @@ function RenderUserList(users, nickname) {
 
 function RenderPlaylist(videos, removeVideo) {
     return (
-        <>
+        <Content style={{
+            padding: 12
+        }}>
+            <List bordered>
             {
                 videos && videos.length > 0 ? videos.map(video => {
-                    return <Panel.Block style={{
-                        'overflow': 'hidden',
-                        'position': 'relative',
-                        'display': 'block',
-                        'border': 'none',
-                        'background': 'black'
-                    }}>
-                                <div className='video-list-item-background' style={{
-                                    backgroundImage: `url(${video.snippet.thumbnails.standard ? video.snippet.thumbnails.standard.url : ''})`
-                                }}>
-                                </div>
-                                <Card.Content style={{
-                                    height: 100
-                                }}>
+                    return <List.Item>
+                                <Card.Content>
                                     <div className='video-list-item-info'>
-                                        <HiTrash style={{
-                                            position: 'absolute',
-                                            top: '12px',
-                                            right: '12px',
-                                            color: '#F44848',
-                                            cursor: 'pointer',
-                                            zIndex: 999
-                                        }} size={24} onClick={() => {
-                                            removeVideo(video);
-                                        }}/>
+                                        <div className=''>
+                                            <ButtonGroup vertical>
+                                                <IconButton icon={<Icon icon='caret-up'/>}/>
+                                                <IconButton icon={<Icon icon='caret-down'/>}/>
+                                            </ButtonGroup>
+                                        </div>
                                         <Media style={{
                                             position: 'relative',
                                             display: 'block'
                                         }}>
-                                            <Media.Item>
-                                                <Heading style={{
-                                                    overflow: 'hidden',
-                                                    whiteSpace: 'nowrap',
-                                                    width: '90%',
-                                                    textOverflow: 'ellipsis',
-                                                    height: '36px',
-                                                    color: 'white'
-                                                }} size={4}>{video.snippet.title}</Heading>
+                                            <Media.Item style={{
+                                                fontWeight: 'bold'
+                                            }}>
+                                                {video.snippet.title}
                                             </Media.Item>
                                         </Media>
                                         <Content style={{
-                                            color: 'white',
                                             width: '90%'
                                         }}>
                                                 {video.snippet.description.substring(0, 100)}...
                                         </Content>
                                     </div>
                                 </Card.Content>
-                            </Panel.Block>
+                            </List.Item>
                 }) : <Panel.Block>Playlist is Empty</Panel.Block>
             }
-        </>
+            </List>
+        </Content>
     )
 }
 
