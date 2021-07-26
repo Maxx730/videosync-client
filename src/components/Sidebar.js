@@ -84,27 +84,29 @@ function RenderPlaylist(videos, removeVideo) {
                     return <List.Item>
                                 <Card.Content>
                                     <div className='video-list-item-info'>
-                                        <div className=''>
+                                        <div className='move-video-buttons'>
                                             <ButtonGroup vertical>
                                                 <IconButton icon={<Icon icon='caret-up'/>}/>
                                                 <IconButton icon={<Icon icon='caret-down'/>}/>
                                             </ButtonGroup>
                                         </div>
-                                        <Media style={{
-                                            position: 'relative',
-                                            display: 'block'
-                                        }}>
-                                            <Media.Item style={{
-                                                fontWeight: 'bold'
+                                        <div>
+                                            <Media style={{
+                                                position: 'relative',
+                                                display: 'block'
                                             }}>
-                                                {video.snippet.title}
-                                            </Media.Item>
-                                        </Media>
-                                        <Content style={{
-                                            width: '90%'
-                                        }}>
-                                                {video.snippet.description.substring(0, 100)}...
-                                        </Content>
+                                                <Media.Item style={{
+                                                    fontWeight: 'bold'
+                                                }}>
+                                                    {video.snippet.title}
+                                                </Media.Item>
+                                            </Media>
+                                            <Content style={{
+                                                width: '90%'
+                                            }}>
+                                                    {video.snippet.description.substring(0, 100)}...
+                                            </Content>
+                                        </div>
                                     </div>
                                 </Card.Content>
                             </List.Item>
