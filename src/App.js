@@ -16,7 +16,7 @@ import ServerStatus from './components/ServerStatus';
 
 const NOTIF_DUR = 1500;
 const DEV_MODE = false;//process.env.NODE_ENV === 'development';
-const SERVER = (process.env.NODE_ENV !== 'development') ? window.location.href.indexOf('-dev') > -1 ? 'https://videosync-dev-5zpyb.ondigitalocean.app' : 'https://videosync-ku38p.ondigitalocean.app' : 'localhost:4000';
+const SERVER = '164.90.140.57:4000';
 
 
 function App() {
