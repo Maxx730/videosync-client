@@ -13,10 +13,9 @@ import CustomNouns from './lib/CustomNouns';
 import Credits from './components/Credits';
 import ServerStatus from './components/ServerStatus';
 
-
 const NOTIF_DUR = 1500;
 const DEV_MODE = false;//process.env.NODE_ENV === 'development';
-const SERVER = 'https://videosync-kr88r.ondigitalocean.app/videosync';
+const SERVER = '147.182.205.226:4000';
 
 
 function App() {
