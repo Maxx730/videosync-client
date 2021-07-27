@@ -16,7 +16,7 @@ import ServerStatus from './components/ServerStatus';
 
 const NOTIF_DUR = 1500;
 const DEV_MODE = false;//process.env.NODE_ENV === 'development';
-const SERVER = '164.90.140.57:4000';
+const SERVER = 'localhost:4000';
 
 
 function App() {
