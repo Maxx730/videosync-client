@@ -16,7 +16,7 @@ import ServerStatus from './components/ServerStatus';
 
 const NOTIF_DUR = 1500;
 const DEV_MODE = false;//process.env.NODE_ENV === 'development';
-const SERVER = 'localhost:8080';
+const SERVER = 'https://videosync-kr88r.ondigitalocean.app/videosync';
 
 
 function App() {
