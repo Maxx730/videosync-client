@@ -8,7 +8,7 @@ import {Columns, Panel, Section} from 'react-bulma-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'universal-cookie';
-import { Button, IconButton, Icon, Notification } from 'rsuite';
+import { Button, IconButton, Icon, Notification, Loader } from 'rsuite';
 import CustomNouns from './lib/CustomNouns';
 import Credits from './components/Credits';
 import ServerStatus from './components/ServerStatus';
@@ -113,7 +113,7 @@ function App() {
              })
              Notification['warning']({
                 title: `Video Time Changed`,
-                description: <> changed the time of the video to {payload.currentTime}</>,
+                description: <><b>{payload.extra.user}</b> changed the time of the video.</>,
                 duration: NOTIF_DUR
              });
         break;
@@ -136,6 +136,7 @@ function App() {
 
   return (
     <div className='app-body'>
+        <Loader content='Loading...'/>
       <div className='top'>
         <Columns>
           <Columns.Column paddingless={true} marginless={true} size={8}>
@@ -159,7 +160,7 @@ function App() {
 
             }} seekVideo={value => {
               socket.connect();
-              socket.emit('change_player_time', value);
+              socket.emit('change_player_time', {time: value, user: nickname});
             }} canSkip={videos.length} devMode={DEV_MODE} runTestVideo={() => {
               socket.emit('test_video', {
 
