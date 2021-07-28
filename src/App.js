@@ -136,63 +136,67 @@ function App() {
 
   return (
     <div className='app-body'>
-        <Loader content='Loading...'/>
-      <div className='top'>
-        <Columns>
-          <Columns.Column paddingless={true} marginless={true} size={8}>
-            <VideoPlayer moveAction={moveAction} reactions={reactions} video={currentVideo} current={currentTime} playing={playing} onEnded={() => {
-              socket.connect();
-              socket.emit('next_video', {
-                user: nickname
-              });
-            }} onPlay={time => {
-              socket.connect();
-              socket.emit('play_pause', {playing: true});
-            }} onPause={time => {
-              socket.connect();
-              socket.emit('play_pause', {playing: false});
-            }} addVideo={video => {
-              socket.connect();
-              socket.emit('add_video', video);
-            }} addReaction={reaction => {
-              socket.emit('add_reaction', reaction);
-            }} onSkipVideo={notif => {
-
-            }} seekVideo={value => {
-              socket.connect();
-              socket.emit('change_player_time', {time: value, user: nickname});
-            }} canSkip={videos.length} devMode={DEV_MODE} runTestVideo={() => {
-              socket.emit('test_video', {
-
-              });
-            }}/>
-          </Columns.Column>
-          <Columns.Column paddingless={true} marginless={true} size={4}>
-            <Section pl={1}>
-              <ServerStatus lastUpdate={lastUpdate} status={serverStatus}/>
-              <Sidebar nickname={nickname}
-              updateNickname={new_name => {
-                socket.emit('update_nickname', new_name);
-                setNickname(new_name.new);
-
-                preferences.set('video-sync-username', new_name.new);
-              }}
-              onSetBanner={value => {
-                socket.emit('set_banner', value);
-              }}
-              removeVideo={video => {
-                socket.emit('remove_video', video);
-              }} playlist={videos} onChangeTab={tab => {
-                setTab(tab);
-              }} moveVideo={payload => {
+        {lastUpdate === null ? 
+          <div className='loading-body'>
+            <Loader content='Loading...'/>
+          </div> :
+          <div className='top'>
+            <Columns>
+              <Columns.Column paddingless={true} marginless={true} size={8}>
+                <VideoPlayer moveAction={moveAction} reactions={reactions} video={currentVideo} current={currentTime} playing={playing} onEnded={() => {
                   socket.connect();
-                  socket.emit('move_video', payload);
-              }}
-              tab={tab} users={users} history={history}/>
-            </Section>
-          </Columns.Column>
-        </Columns>      
-      </div>
+                  socket.emit('next_video', {
+                    user: nickname
+                  });
+                }} onPlay={time => {
+                  socket.connect();
+                  socket.emit('play_pause', {playing: true});
+                }} onPause={time => {
+                  socket.connect();
+                  socket.emit('play_pause', {playing: false});
+                }} addVideo={video => {
+                  socket.connect();
+                  socket.emit('add_video', video);
+                }} addReaction={reaction => {
+                  socket.emit('add_reaction', reaction);
+                }} onSkipVideo={notif => {
+
+                }} seekVideo={value => {
+                  socket.connect();
+                  socket.emit('change_player_time', {time: value, user: nickname});
+                }} canSkip={videos.length} devMode={DEV_MODE} runTestVideo={() => {
+                  socket.emit('test_video', {
+
+                  });
+                }}/>
+              </Columns.Column>
+              <Columns.Column paddingless={true} marginless={true} size={4}>
+                <Section pl={1}>
+                  <ServerStatus lastUpdate={lastUpdate} status={serverStatus}/>
+                  <Sidebar nickname={nickname}
+                  updateNickname={new_name => {
+                    socket.emit('update_nickname', new_name);
+                    setNickname(new_name.new);
+
+                    preferences.set('video-sync-username', new_name.new);
+                  }}
+                  onSetBanner={value => {
+                    socket.emit('set_banner', value);
+                  }}
+                  removeVideo={video => {
+                    socket.emit('remove_video', video);
+                  }} playlist={videos} onChangeTab={tab => {
+                    setTab(tab);
+                  }} moveVideo={payload => {
+                      socket.connect();
+                      socket.emit('move_video', payload);
+                  }}
+                  tab={tab} users={users} history={history}/>
+                </Section>
+              </Columns.Column>
+            </Columns>      
+          </div>
+          }
       <div className='bottom'>
         <Credits/>
       </div>

@@ -8,6 +8,7 @@ import { IconButton, Icon, ButtonGroup, List, Whisper, Tooltip } from 'rsuite';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import CustomNouns from 'lib/CustomNouns';
 
+const TOOLTIP_TIME = 1000;
 const { Input, Field, Control, Label } = Form;
 
 export default function Sidebar(props) {
@@ -80,30 +81,30 @@ function RenderPlaylist(videos, removeVideo, moveVideo) {
         }}>
             <List bordered>
             {
-                videos && videos.length > 0 ? videos.map(video => {
+                videos && videos.length > 0 ? videos.map((video, index) => {
                     return <List.Item>
                                 <Card.Content>
                                     <div className='video-list-item-info'>
                                         <div className='move-video-buttons'>
                                             <ButtonGroup vertical>
-                                                <Whisper placement="top" trigger="hover" speaker={
+                                                <Whisper delay={TOOLTIP_TIME} placement="top" trigger="hover" speaker={
                                                     <Tooltip>
                                                         Move Video Up
                                                     </Tooltip>
                                                 }>
-                                                    <IconButton onClick={event => {
+                                                    <IconButton color='blue' disabled={index < 1} onClick={event => {
                                                         moveVideo({
                                                             direction: 'up',
                                                             video: video
                                                         });
                                                     }} appearance='subtle' icon={<Icon icon='caret-up'/>}/>
                                                 </Whisper>
-                                                <Whisper placement="bottom" trigger="hover" speaker={
+                                                <Whisper delay={TOOLTIP_TIME} placement="bottom" trigger="hover" speaker={
                                                     <Tooltip>
                                                         Move Video Down
                                                     </Tooltip>
                                                 }>
-                                                    <IconButton onClick={event => {
+                                                    <IconButton color='blue' disabled={index + 1 === videos.length} onClick={event => {
                                                         moveVideo({
                                                             direction: 'down',
                                                             video: video
