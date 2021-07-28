@@ -15,7 +15,7 @@ import ServerStatus from './components/ServerStatus';
 
 const NOTIF_DUR = 1500;
 const DEV_MODE = false;//process.env.NODE_ENV === 'development';
-const SERVER = 'https://videosync-jipwm.ondigitalocean.app:4000';
+const SERVER = 'https://videosync-jipwm.ondigitalocean.app';
 
 
 function App() {
