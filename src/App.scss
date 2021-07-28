@@ -186,6 +186,16 @@ h1.yikes {
   }
 }
 
+.server-time {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 0;
+    
+    span {
+        padding-left: 6px;
+    }
+}
+
 @keyframes bop {
   0% {
     transform: scale(0.9);

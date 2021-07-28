@@ -34,9 +34,7 @@ export default function Player(props) {
             {
                 props.video ? <>
                 <div className='sync-player'>
-                    <ReactPlayer volume={volume} ref={PlayerRef} controls={false} playing={props.playing} width={'auto'} height={'auto'} onProgress={progress => {
-
-                    }} onEnded={() => {
+                    <ReactPlayer volume={volume} ref={PlayerRef} controls={false} playing={props.playing} width={'auto'} height={'auto'} onEnded={() => {
                         props.onEnded && props.onEnded();
                     }} onPlay={() => {
                         props.onPlay && props.onPlay(PlayerRef.current.getCurrentTime());
@@ -97,6 +95,7 @@ export default function Player(props) {
                         }} visible = {showVolume}>
                             <Slider tooltip={false} onChange={value => {
                                 setVolume(1 - value)
+                                setShowVolume(false);
                             }} style={{
                                 height: 100
                             }} max={1} min={0} step={0.01} vertical/>

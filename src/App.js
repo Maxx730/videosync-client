@@ -15,7 +15,7 @@ import ServerStatus from './components/ServerStatus';
 
 const NOTIF_DUR = 1500;
 const DEV_MODE = false;//process.env.NODE_ENV === 'development';
-const SERVER = 'https://videosync-jipwm.ondigitalocean.app';
+const SERVER = 'localhost:4000';
 
 
 function App() {
@@ -103,6 +103,20 @@ function App() {
             duration: NOTIF_DUR
           });
         break;
+        case 'change_player_time':
+             setMoveAction({
+                time: payload.currentTime,
+                complete: false,
+                onComplete: () => {
+                  setMoveAction({complete: false});
+                }
+             })
+             Notification['warning']({
+                title: `Video Time Changed`,
+                description: <> changed the time of the video to {payload.currentTime}</>,
+                duration: NOTIF_DUR
+             });
+        break;
         case 'banner':
           setBanner(payload.banner);
         break;
@@ -144,6 +158,7 @@ function App() {
             }} onSkipVideo={notif => {
 
             }} seekVideo={value => {
+              socket.connect();
               socket.emit('change_player_time', value);
             }} canSkip={videos.length} devMode={DEV_MODE} runTestVideo={() => {
               socket.emit('test_video', {
