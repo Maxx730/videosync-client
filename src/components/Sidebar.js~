@@ -4,7 +4,7 @@ import Marquee from 'react-fast-marquee';
 import { HiUserCircle,HiPlay, HiTrash } from 'react-icons/hi';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { useState } from 'react';
-import { IconButton, Icon, ButtonGroup, List, Whisper, Tooltip } from 'rsuite';
+import { IconButton, Icon, ButtonGroup, List } from 'rsuite';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import CustomNouns from 'lib/CustomNouns';
 
@@ -47,7 +47,7 @@ export default function Sidebar(props) {
                 tab === 'users' && RenderUserList(props.users, props.nickname)
             }
             {
-                tab === 'playlist' && RenderPlaylist(props.playlist, props.removeVideo, props.moveVideo)
+                tab === 'playlist' && RenderPlaylist(props.playlist, props.removeVideo)
             }
             {
                 tab === 'settings' && RenderSettings(nickname, setNickname, props.updateNickname, props, randomName, setRandomName, {
@@ -73,7 +73,7 @@ function RenderUserList(users, nickname) {
     )
 }
 
-function RenderPlaylist(videos, removeVideo, moveVideo) {
+function RenderPlaylist(videos, removeVideo) {
     return (
         <Content style={{
             padding: 12
@@ -86,30 +86,8 @@ function RenderPlaylist(videos, removeVideo, moveVideo) {
                                     <div className='video-list-item-info'>
                                         <div className='move-video-buttons'>
                                             <ButtonGroup vertical>
-                                                <Whisper placement="top" trigger="hover" speaker={
-                                                    <Tooltip>
-                                                        Move Video Up
-                                                    </Tooltip>
-                                                }>
-                                                    <IconButton onClick={event => {
-                                                        moveVideo({
-                                                            direction: 'up',
-                                                            video: video
-                                                        });
-                                                    }} appearance='subtle' icon={<Icon icon='caret-up'/>}/>
-                                                </Whisper>
-                                                <Whisper placement="bottom" trigger="hover" speaker={
-                                                    <Tooltip>
-                                                        Move Video Down
-                                                    </Tooltip>
-                                                }>
-                                                    <IconButton onClick={event => {
-                                                        moveVideo({
-                                                            direction: 'down',
-                                                            video: video
-                                                        });
-                                                    }} appearance='subtle' icon={<Icon icon='caret-down'/>}/>
-                                                </Whisper>
+                                                <IconButton appearance='primary' icon={<Icon icon='caret-up'/>}/>
+                                                <IconButton appearance='primary' icon={<Icon icon='caret-down'/>}/>
                                             </ButtonGroup>
                                         </div>
                                         <div>

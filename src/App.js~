@@ -15,7 +15,7 @@ import ServerStatus from './components/ServerStatus';
 
 const NOTIF_DUR = 1500;
 const DEV_MODE = false;//process.env.NODE_ENV === 'development';
-const SERVER = 'https://videosync-jipwm.ondigitalocean.app:4000';
+const SERVER = 'localhost:4000';
 
 
 function App() {
@@ -78,7 +78,7 @@ function App() {
         case 'skip_video':
           Notification['warning']({
             title: `Video Skipped`,
-            description: <><b>{payload.extra.user}</b> skipped the current video.</>,
+            description: <><b>{payload.user}</b> skipped the current video.</>,
             duration: NOTIF_DUR
           });
         break;
@@ -93,13 +93,6 @@ function App() {
           Notification['success']({
             title: `Username Changed`,
             description: <><b>{payload.user}</b> changed their name.</>,
-            duration: NOTIF_DUR
-          });
-        break;
-        case 'video_exists':
-          Notification['error']({
-            title: `Video Exists`,
-            description: <>Video already exists in Playlist!</>,
             duration: NOTIF_DUR
           });
         break;
@@ -126,15 +119,12 @@ function App() {
         <Columns>
           <Columns.Column paddingless={true} marginless={true} size={8}>
             <VideoPlayer moveAction={moveAction} reactions={reactions} video={currentVideo} current={currentTime} playing={playing} onEnded={() => {
-              socket.connect();
               socket.emit('next_video', {
                 user: nickname
               });
             }} onPlay={time => {
-              socket.connect();
               socket.emit('play_pause', {playing: true});
             }} onPause={time => {
-              socket.connect();
               socket.emit('play_pause', {playing: false});
             }} addVideo={video => {
               socket.connect();
@@ -168,11 +158,7 @@ function App() {
                 socket.emit('remove_video', video);
               }} playlist={videos} onChangeTab={tab => {
                 setTab(tab);
-              }} moveVideo={payload => {
-                  socket.connect();
-                  socket.emit('move_video', payload);
-              }}
-              tab={tab} users={users} history={history}/>
+              }} tab={tab} users={users} history={history}/>
             </Section>
           </Columns.Column>
         </Columns>      

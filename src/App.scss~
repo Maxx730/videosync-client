@@ -97,7 +97,6 @@ html, body, #root {
 
     .move-video-buttons {
       margin-right: 16px;
-      padding-top: 6px;
     }
 }
 
