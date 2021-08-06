@@ -24,7 +24,7 @@ function App() {
   const [videos, setVideos] = useState([]);
   const [history, setHistory] = useState([]);
   const [tab, setTab] = useState('playlist');
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [currentVideo, setCurrentVideo] = useState(null);
   const [moveAction, setMoveAction] = useState({
