@@ -50,11 +50,14 @@ function App() {
       socket.emit('sync');
     }, 5000);
 
+    window.addEventListener('focus', () => {
+      socket.emit('play_pause', {playing: true});
+    });
+
     //Join the room when the user loads the page.
     socket.emit('user_joined', nickname);
 
     socket.on('state_updated', payload => {
-      console.log(payload);
       switch(payload.action) {
         case 'joined':
           const user = payload.users[payload.users.length - 1].nickname;
