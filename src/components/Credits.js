@@ -5,7 +5,7 @@ export default function Credits(props) {
         <>
             <div className='credits'>
                 <span>
-                    Version 0.0.1 - Chinkertin Studios
+
                 </span>
             </div>
         </>
