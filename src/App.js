@@ -33,7 +33,7 @@ function App() {
   });
   const [preferences, setPreferences] = useState(new Cookies());
   const [nickname, setNickname] = useState(preferences.get('video-sync-username') ? preferences.get('video-sync-username') : uniqueNamesGenerator({ 
-    dictionaries: [adjectives, CustomNouns],
+    dictionaries: [adjectives, animals],
     separator: '',
     style: 'capital',
     length: 2 
